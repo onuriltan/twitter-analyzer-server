@@ -4,24 +4,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import twitter4j.conf.ConfigurationBuilder;
 
 @Configuration
-@ConfigurationProperties("app")
+@ConfigurationProperties(prefix="twitter")
 public class TwitterConfig {
 
-    @Value("${twitter.api_key}")
     private String consumerKey;
-    @Value("${twitter.api_secret}")
     private String consumerSecret;
-    @Value("${twitter.access_token}")
     private String accessToken;
-    @Value("${twitter.access_token_secret}")
     private String accessTokenSecret;
 
-
     @Bean
+    @Scope("prototype")
     public ConfigurationBuilder twitterConfiguration(){
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -32,5 +28,9 @@ public class TwitterConfig {
         cb.setJSONStoreEnabled(true);
         return cb;
     }
+
+
+
+
 
 }
