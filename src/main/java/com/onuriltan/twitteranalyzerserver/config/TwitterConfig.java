@@ -1,13 +1,12 @@
 package com.onuriltan.twitteranalyzerserver.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import twitter4j.conf.ConfigurationBuilder;
 
-@Configuration
+@Component
 @ConfigurationProperties(prefix="twitter")
 public class TwitterConfig {
 
@@ -15,6 +14,7 @@ public class TwitterConfig {
     private String consumerSecret;
     private String accessToken;
     private String accessTokenSecret;
+
 
     @Bean
     @Scope("prototype")
@@ -29,8 +29,35 @@ public class TwitterConfig {
         return cb;
     }
 
+    public String getConsumerKey() {
+        return consumerKey;
+    }
 
+    public void setConsumerKey(String consumerKey) {
+        this.consumerKey = consumerKey;
+    }
 
+    public String getConsumerSecret() {
+        return consumerSecret;
+    }
 
+    public void setConsumerSecret(String consumerSecret) {
+        this.consumerSecret = consumerSecret;
+    }
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getAccessTokenSecret() {
+        return accessTokenSecret;
+    }
+
+    public void setAccessTokenSecret(String accessTokenSecret) {
+        this.accessTokenSecret = accessTokenSecret;
+    }
 }

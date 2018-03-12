@@ -1,6 +1,20 @@
+spring:
+  profiles:
+      active: "dev"
+
+---
+
+spring:
+  profiles: dev
+
+
 server:
   port: 3001
 
-spring:
-  profiles:
-    active: development
+twitter:
+  api-key : gYBOmrWOnlS69DScInBWrTGFr
+  api-secret: wv8LHjQnCUjR28ALBVinPFRIiufvCQoh82qvmCo2ufkioZVFkU
+  access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
+  access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
+
+---
