@@ -1,48 +1,50 @@
 package com.onuriltan.twitteranalyzerserver.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-@Component
+import javax.annotation.PostConstruct;
+
+@Configuration
 @ConfigurationProperties(prefix="twitter")
 public class TwitterConfig {
 
-    private String consumerKey;
-    private String consumerSecret;
+    private String apiKey;
+    private String apiSecret;
     private String accessToken;
     private String accessTokenSecret;
+    private ConfigurationBuilder configurationBuilder;
 
-
-    @Bean
-    @Scope("prototype")
-    public ConfigurationBuilder twitterConfiguration(){
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey(consumerKey)
-                .setOAuthConsumerSecret(consumerSecret)
-                .setOAuthAccessToken(accessToken)
-                .setOAuthAccessTokenSecret(accessTokenSecret);
-        cb.setJSONStoreEnabled(true);
-        return cb;
+    @PostConstruct
+    public ConfigurationBuilder buildTwitterConfig(){
+        if (apiKey != null && apiSecret != null && accessToken != null && accessTokenSecret != null) {
+            configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.setDebugEnabled(true)
+                    .setOAuthConsumerKey(apiKey)
+                    .setOAuthConsumerSecret(apiSecret)
+                    .setOAuthAccessToken(accessToken)
+                    .setOAuthAccessTokenSecret(accessTokenSecret);
+            configurationBuilder.setJSONStoreEnabled(true);
+        }
+        return configurationBuilder;
     }
 
-    public String getConsumerKey() {
-        return consumerKey;
+
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setConsumerKey(String consumerKey) {
-        this.consumerKey = consumerKey;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
-    public String getConsumerSecret() {
-        return consumerSecret;
+    public String getApiSecret() {
+        return apiSecret;
     }
 
-    public void setConsumerSecret(String consumerSecret) {
-        this.consumerSecret = consumerSecret;
+    public void setApiSecret(String apiSecret) {
+        this.apiSecret = apiSecret;
     }
 
     public String getAccessToken() {
@@ -59,5 +61,9 @@ public class TwitterConfig {
 
     public void setAccessTokenSecret(String accessTokenSecret) {
         this.accessTokenSecret = accessTokenSecret;
+    }
+
+    public ConfigurationBuilder getConfigurationBuilder() {
+        return configurationBuilder;
     }
 }
