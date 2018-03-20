@@ -1,8 +1,6 @@
-package com.onuriltan.twitteranalyzerserver.api.stream.repository;
+package com.onuriltan.twitteranalyzerserver.socket.twitterstream.repository;
 
-
-import com.onuriltan.twitteranalyzerserver.api.stream.model.Tweet;
-import com.onuriltan.twitteranalyzerserver.redis.RedisRepository;
+import com.onuriltan.twitteranalyzerserver.socket.twitterstream.model.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,42 +10,31 @@ import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @Repository
-public class StreamRepository implements RedisRepository {
+public class RedisRepositoryImpl implements RedisRepository {
 
     private static final String KEY = "Tweet";
-
     private RedisTemplate<String, Object> redisTemplate;
     private HashOperations hashOperations;
 
     @Autowired
-    public StreamRepository(RedisTemplate<String, Object> redisTemplate) {
+    public RedisRepositoryImpl(RedisTemplate<String, Object> redisTemplate){
         this.redisTemplate = redisTemplate;
     }
 
     @PostConstruct
-    private void init() {
+    private void init(){
         hashOperations = redisTemplate.opsForHash();
     }
-
-    @Override
     public void add(final Tweet tweet) {
-        hashOperations.put(KEY, tweet.getText(), tweet.getUser());
+        hashOperations.put(KEY, tweet, tweet);
     }
-
-    @Override
     public void delete(final String id) {
         hashOperations.delete(KEY, id);
     }
-
-    @Override
-
-    public Tweet findTweet(final String id) {
+    public Tweet findMovie(final String id){
         return (Tweet) hashOperations.get(KEY, id);
     }
-
-    @Override
-    public Map<Object, Object> findAllTweets() {
+    public Map<Object, Object> findAllMovies(){
         return hashOperations.entries(KEY);
     }
-
 }

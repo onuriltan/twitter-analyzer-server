@@ -1,21 +1,23 @@
-package com.onuriltan.twitteranalyzerserver.config;
+package com.onuriltan.twitteranalyzerserver.config.twitter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 
+import javax.inject.Inject;
+
 @Configuration
 public class TwitterStreamConfig {
 
-    @Autowired
+    @Inject
     TwitterConfig twitterConfig;
-    @Autowired
+
+    @Inject
     TwitterListenerConfig twitterListenerConfig;
 
     @Bean
-    TwitterStream twitterStream(){
+    TwitterStream getTwitterStream(){
         TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(twitterConfig.getConfigurationBuilder().build());
         TwitterStream twitterStream = twitterStreamFactory.getInstance();
         twitterStream.addListener(twitterListenerConfig);

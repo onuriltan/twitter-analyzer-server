@@ -1,37 +1,30 @@
-package com.onuriltan.twitteranalyzerserver.config;
+package com.onuriltan.twitteranalyzerserver.config.twitter;
 
-import com.onuriltan.twitteranalyzerserver.api.stream.model.Tweet;
-import com.onuriltan.twitteranalyzerserver.api.stream.repository.StreamRepository;
-import com.onuriltan.twitteranalyzerserver.socket.TweetSocketHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.onuriltan.twitteranalyzerserver.socket.twitterstream.model.Tweet;
+import com.onuriltan.twitteranalyzerserver.socket.twitterstream.repository.RedisRepository;
 import org.springframework.context.annotation.Configuration;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 
+import javax.inject.Inject;
+
 @Configuration
 public class TwitterListenerConfig implements StatusListener {
 
-    @Autowired
-    StreamRepository streamRepository;
-
-    private Tweet tweet;
-
-    public TwitterListenerConfig() {
-        tweet = new Tweet();
-    }
+    @Inject
+    private RedisRepository redisRepository;
 
     @Override
     public void onStatus(Status status) {
+        Tweet tweet = new Tweet();
        if(status.getLang().equals("tr") && !status.isRetweet()) {
-           tweet.setText(status.getText());
-           tweet.setGeoLocation(status.getGeoLocation());
-           tweet.setUser(status.getUser());
-           tweet.setLang(status.getLang());
-           tweet.setPlace(status.getPlace());
+           tweet.setBody(status.getText());
+           tweet.setLanguage(status.getLang());
+           redisRepository.add(tweet);
 
-           streamRepository.add(tweet);
            System.out.println(status.getLang() + " : " + status.getText());
        }
 
