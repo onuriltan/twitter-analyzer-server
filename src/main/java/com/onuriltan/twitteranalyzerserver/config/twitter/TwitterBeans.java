@@ -8,19 +8,15 @@ import twitter4j.TwitterStreamFactory;
 import javax.inject.Inject;
 
 @Configuration
-public class TwitterStreamConfig {
+public class TwitterBeans {
 
     @Inject
     TwitterConfig twitterConfig;
 
-    @Inject
-    TwitterListenerConfig twitterListenerConfig;
-
     @Bean
-    TwitterStream getTwitterStream(){
+    public TwitterStream twitterStream(){
         TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(twitterConfig.getConfigurationBuilder().build());
-        TwitterStream twitterStream = twitterStreamFactory.getInstance();
-        twitterStream.addListener(twitterListenerConfig);
+        twitter4j.TwitterStream twitterStream = twitterStreamFactory.getInstance();
         return twitterStream;
 
     }

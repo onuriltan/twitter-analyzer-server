@@ -10,13 +10,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/getTwitterStream").withSockJS();
+        registry.addEndpoint("/twitterStream").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/twitter");
-        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/backend");
+        registry.enableSimpleBroker("/frontend");
     }
 }
 
