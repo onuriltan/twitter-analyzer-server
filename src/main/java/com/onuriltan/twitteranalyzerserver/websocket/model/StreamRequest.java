@@ -1,20 +1,16 @@
 package com.onuriltan.twitteranalyzerserver.websocket.model;
 
-public class Request {
+public class StreamRequest {
 
-    private Command command;
+    private String command;
     private String message;
 
-    public enum Command {
-        START,
-        STOP
-    }
 
-    public Command getCommand() {
+    public String getCommand() {
         return command;
     }
 
-    public void setCommand(Command command) {
+    public void setCommand(String command) {
         this.command = command;
     }
 

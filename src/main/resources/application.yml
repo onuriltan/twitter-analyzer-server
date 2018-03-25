@@ -13,6 +13,14 @@ spring:
     password: 1234
     port: 6379
 
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+
 
 server:
   port: 3001

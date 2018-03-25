@@ -1,10 +1,13 @@
 package com.onuriltan.twitteranalyzerserver.websocket.model;
 
-public class Response {
+import org.springframework.data.redis.core.RedisHash;
+
+@RedisHash("Tweet")
+public class Tweet {
 
     private String tweet;
 
-    public Response(String tweet){
+    public Tweet(String tweet){
         this.tweet = tweet;
     }
 
