@@ -25,8 +25,8 @@
     </properties>
 
     <dependencies>
-
         <!-- Spring Boot -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -69,13 +69,12 @@
         </dependency>
 
         <!-- Redis -->
+
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
         </dependency>
-
-        <!-- Web Messaging -->
 
 
         <!-- Java -->
@@ -87,6 +86,7 @@
         </dependency>
 
         <!-- Twitter -->
+
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-stream</artifactId>
@@ -100,11 +100,26 @@
         </dependency>
 
         <!-- Natural Language Processor -->
+
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
             <version>3.9.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <classifier>models</classifier>
+            <version>3.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-parser</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
 
     </dependencies>
 

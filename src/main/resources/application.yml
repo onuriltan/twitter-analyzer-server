@@ -21,7 +21,6 @@ logging:
           filter:
             CommonsRequestLoggingFilter: DEBUG
 
-
 server:
   port: 3001
 
