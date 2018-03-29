@@ -32,7 +32,6 @@ public class BaseTwitterStream {
                     if (status.getLang().equals("en") && !status.isRetweet()) {
                         redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText()));
 
-                        System.out.println(status.getText());
                         tweetAnalyzer.applyNLP();
                     }
                 }

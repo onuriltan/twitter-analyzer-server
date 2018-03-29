@@ -13,7 +13,7 @@ public class StreamSocketService {
     @Inject
     BaseTwitterStream baseTwitterStream;
 
-    public void startStream(StreamRequest streamRequest, SimpMessageSendingOperations webSocket){
+    public void manageStream(StreamRequest streamRequest, SimpMessageSendingOperations webSocket){
         baseTwitterStream.manageTwitterStream(streamRequest,webSocket);
     }
 

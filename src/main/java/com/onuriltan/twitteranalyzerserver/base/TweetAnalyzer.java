@@ -52,7 +52,6 @@ public class TweetAnalyzer {
                     tokenizedTweet.setWord(word);
                     tokenizedTweet.setNamedEntity(ne);
                     System.out.println(String.format("word: [%s] ne: [%s]", word, ne));
-                    System.out.println();
                     webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
 
                 }

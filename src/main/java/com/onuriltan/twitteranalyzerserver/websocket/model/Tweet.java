@@ -23,4 +23,5 @@ public class Tweet implements Serializable{
     public void setTweet(String tweet) {
         this.tweet = tweet;
     }
+
 }

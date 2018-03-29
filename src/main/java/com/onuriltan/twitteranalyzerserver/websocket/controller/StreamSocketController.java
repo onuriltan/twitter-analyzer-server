@@ -18,10 +18,10 @@ public class StreamSocketController {
     @Inject
     private StreamSocketService streamSocketService;
 
-    @MessageMapping("/startTwitterStream")
-    public String sendStream(StreamRequest streamRequest) throws Exception {
+    @MessageMapping("/manageTwitterStream")
+    public String manageStream(StreamRequest streamRequest) throws Exception {
         Thread.sleep(1000); // simulated delay
-        streamSocketService.startStream(streamRequest, webSocket);
+        streamSocketService.manageStream(streamRequest, webSocket);
         return "OK";
     }
 
