@@ -2,9 +2,27 @@ package com.onuriltan.twitteranalyzerserver.websocket.model;
 
 public class TokenizedTweet {
 
+    private String tweet;
     private String word;
     private String namedEntity;
+    private Double latitude;
+    private Double longitude;
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getWord() {
         return word;
@@ -20,5 +38,13 @@ public class TokenizedTweet {
 
     public void setNamedEntity(String namedEntity) {
         this.namedEntity = namedEntity;
+    }
+
+    public String getTweet() {
+        return tweet;
+    }
+
+    public void setTweet(String tweet) {
+        this.tweet = tweet;
     }
 }

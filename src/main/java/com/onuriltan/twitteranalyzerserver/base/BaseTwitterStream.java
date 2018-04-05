@@ -30,7 +30,13 @@ public class BaseTwitterStream {
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
                     if (status.getLang().equals("en") && !status.isRetweet()) {
-                        redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText()));
+                        if(status.getGeoLocation() != null) {
+                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
+                        }
+                        else {
+                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(),null,null));
+
+                        }
 
                         tweetAnalyzer.applyNLP();
                     }
@@ -57,6 +63,8 @@ public class BaseTwitterStream {
         }
         if("stop".equals(request.getCommand())){
             twitterStream.shutdown();
+            twitterStream.cleanUp();
+            redisTemplate.discard();
 
         }
 

@@ -33,6 +33,18 @@ public class TweetAnalyzer {
 
         Annotation document = new Annotation(tweet.getTweet());
 
+        if(tweet.getLatitude() != null || tweet.getLongitude() != null) {
+            TokenizedTweet location = new TokenizedTweet();
+
+            location.setTweet(tweet.getTweet().toString());
+            location.setLatitude(tweet.getLatitude());
+            location.setLongitude(tweet.getLongitude());
+
+            webSocket.convertAndSend("/topic/fetchTwitterStream", location);
+        }
+
+
+
         // run all Annotators on this text
         stanfordCoreNLP.annotate(document);
 
@@ -44,10 +56,9 @@ public class TweetAnalyzer {
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 // this is the text of the token
                 String word = token.get(CoreAnnotations.TextAnnotation.class);
-
                 // this is the NER label of the token
                 String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
-                if(!ne.equals("O") && !ne.equals("MISC")){
+                if (!ne.equals("O") && !ne.equals("MISC")) {
                     TokenizedTweet tokenizedTweet = new TokenizedTweet();
                     tokenizedTweet.setWord(word);
                     tokenizedTweet.setNamedEntity(ne);
@@ -59,7 +70,5 @@ public class TweetAnalyzer {
             }
 
         }
-
-
     }
 }
