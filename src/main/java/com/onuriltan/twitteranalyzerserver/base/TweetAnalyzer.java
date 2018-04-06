@@ -31,6 +31,8 @@ public class TweetAnalyzer {
 
         Tweet tweet = (Tweet) redisTemplate.boundListOps("tweet").leftPop();
 
+
+
         Annotation document = new Annotation(tweet.getTweet());
 
         if(tweet.getLatitude() != null || tweet.getLongitude() != null) {
@@ -43,6 +45,12 @@ public class TweetAnalyzer {
             webSocket.convertAndSend("/topic/fetchTwitterStream", location);
         }
 
+        TokenizedTweet mainTweet = new TokenizedTweet();
+
+        mainTweet.setTweet(tweet.getTweet().toString());
+        mainTweet.setForStreamPanel(true);
+
+        webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
 
         // run all Annotators on this text

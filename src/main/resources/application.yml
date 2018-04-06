@@ -30,4 +30,7 @@ twitter:
   access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
   access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
 
+google:
+  api-key: AIzaSyDdyZbVPAIXsjwUm0IROfSYtWK-_pjcsK
+
 ---

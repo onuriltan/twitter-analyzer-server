@@ -7,6 +7,7 @@ public class TokenizedTweet {
     private String namedEntity;
     private Double latitude;
     private Double longitude;
+    private Boolean isForStreamPanel;
 
     public Double getLatitude() {
         return latitude;
@@ -46,5 +47,13 @@ public class TokenizedTweet {
 
     public void setTweet(String tweet) {
         this.tweet = tweet;
+    }
+
+    public Boolean getForStreamPanel() {
+        return isForStreamPanel;
+    }
+
+    public void setForStreamPanel(Boolean forStreamPanel) {
+        isForStreamPanel = forStreamPanel;
     }
 }
