@@ -30,7 +30,8 @@ twitter:
   access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
   access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
 
-google:
-  api-key: AIzaSyDdyZbVPAIXsjwUm0IROfSYtWK-_pjcsK
+googlemaps:
+  api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
+  url: https://maps.googleapis.com/maps/api/geocode/json
 
 ---

@@ -1,5 +1,7 @@
 package com.onuriltan.twitteranalyzerserver.base;
 
+import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
+import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
 import com.onuriltan.twitteranalyzerserver.config.googlemaps.GoogleMapsConfig;
 import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
 import com.onuriltan.twitteranalyzerserver.websocket.model.Tweet;
@@ -27,23 +29,23 @@ public class BaseTwitterStream {
     TweetAnalyzer tweetAnalyzer;
 
     @Inject
-    GoogleMapsConfig googleMapsConfig;
-
-    @Inject
-    RestTemplate restTemplate;
+    GeocodeGenerator geocodeGenerator;
 
     public void manageTwitterStream(StreamRequest request, SimpMessageSendingOperations webSocket) {
 
-        if("start".equals(request.getCommand())) {
+        if ("start".equals(request.getCommand())) {
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
                     if (!status.isRetweet()) {
-                        if(status.getGeoLocation() != null) {
+                        if (status.getGeoLocation() != null) {
                             redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
-                        }
-
-                        else {
-                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(),null,null));
+                        } else if (status.getUser().getLocation() != null) {
+                            GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
+                            if (geocodeResponse != null) {
+                                redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
+                            }
+                        } else {
+                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), null, null));
 
                         }
 
@@ -70,7 +72,7 @@ public class BaseTwitterStream {
             twitterStream.addListener(listener);
             twitterStream.filter(request.getMessage());
         }
-        if("stop".equals(request.getCommand())){
+        if ("stop".equals(request.getCommand())) {
             twitterStream.clearListeners();
             redisTemplate.discard();
 
