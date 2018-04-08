@@ -8,13 +8,15 @@ import java.io.Serializable;
 public class Tweet implements Serializable{
 
     private String tweet;
+    private String username;
     private Double latitude;
     private Double longitude;
 
     private String word;
     private String pos;
 
-    public Tweet(String tweet, Double latitude, Double longitude){
+    public Tweet(String username, String tweet, Double latitude, Double longitude){
+        this.username = username;
         this.tweet = tweet;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -54,6 +56,14 @@ public class Tweet implements Serializable{
 
     public String getPos() {
         return pos;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPos(String pos) {

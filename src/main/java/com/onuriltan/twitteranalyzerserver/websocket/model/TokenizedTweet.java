@@ -3,11 +3,21 @@ package com.onuriltan.twitteranalyzerserver.websocket.model;
 public class TokenizedTweet {
 
     private String tweet;
+    private String username;
     private String word;
     private String namedEntity;
     private Double latitude;
     private Double longitude;
     private Boolean isForStreamPanel;
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Double getLatitude() {
         return latitude;

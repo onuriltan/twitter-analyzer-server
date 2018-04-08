@@ -32,51 +32,54 @@ public class TweetAnalyzer {
         Tweet tweet = (Tweet) redisTemplate.boundListOps("tweet").leftPop();
 
 
+        if(tweet.getTweet() != null) {
 
-        Annotation document = new Annotation(tweet.getTweet());
+            Annotation document = new Annotation(tweet.getTweet());
 
-        if(tweet.getLatitude() != null || tweet.getLongitude() != null) {
-            TokenizedTweet location = new TokenizedTweet();
+            if (tweet.getLatitude() != null || tweet.getLongitude() != null) {
+                TokenizedTweet location = new TokenizedTweet();
 
-            location.setTweet(tweet.getTweet().toString());
-            location.setLatitude(tweet.getLatitude());
-            location.setLongitude(tweet.getLongitude());
+                location.setTweet(tweet.getTweet().toString());
+                location.setLatitude(tweet.getLatitude());
+                location.setLongitude(tweet.getLongitude());
 
-            webSocket.convertAndSend("/topic/fetchTwitterStream", location);
-        }
+                webSocket.convertAndSend("/topic/fetchTwitterStream", location);
+            }
 
-        TokenizedTweet mainTweet = new TokenizedTweet();
+            TokenizedTweet mainTweet = new TokenizedTweet();
 
-        mainTweet.setTweet(tweet.getTweet().toString());
-        mainTweet.setForStreamPanel(true);
+            mainTweet.setUsername(tweet.getUsername());
+            mainTweet.setTweet(tweet.getTweet().toString());
+            mainTweet.setForStreamPanel(true);
 
-        webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
+            webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
 
-        // run all Annotators on this text
-        stanfordCoreNLP.annotate(document);
+            // run all Annotators on this text
+            stanfordCoreNLP.annotate(document);
 
-        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
-        for (CoreMap sentence : sentences) {
-            // traversing the words in the current sentence
-            // a CoreLabel is a CoreMap with additional token-specific methods
-            for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                // this is the text of the token
-                String word = token.get(CoreAnnotations.TextAnnotation.class);
-                // this is the NER label of the token
-                String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
-                if (!ne.equals("O") && !ne.equals("MISC")) {
-                    TokenizedTweet tokenizedTweet = new TokenizedTweet();
-                    tokenizedTweet.setWord(word);
-                    tokenizedTweet.setNamedEntity(ne);
-                    System.out.println(String.format("word: [%s] ne: [%s]", word, ne));
-                    webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
+            for (CoreMap sentence : sentences) {
+                // traversing the words in the current sentence
+                // a CoreLabel is a CoreMap with additional token-specific methods
+                for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                    // this is the text of the token
+                    String word = token.get(CoreAnnotations.TextAnnotation.class);
+                    // this is the NER label of the token
+                    String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
+                    if (!ne.equals("O") && !ne.equals("MISC")) {
+                        TokenizedTweet tokenizedTweet = new TokenizedTweet();
+                        tokenizedTweet.setWord(word);
+                        tokenizedTweet.setNamedEntity(ne);
+                        System.out.println(String.format("word: [%s] ne: [%s]", word, ne));
+                        webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
+
+                    }
 
                 }
 
             }
-
         }
     }
 }

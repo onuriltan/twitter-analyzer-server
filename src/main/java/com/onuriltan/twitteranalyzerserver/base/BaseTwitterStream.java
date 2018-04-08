@@ -38,14 +38,14 @@ public class BaseTwitterStream {
                 public void onStatus(Status status) {
                     if (!status.isRetweet()) {
                         if (status.getGeoLocation() != null) {
-                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
+                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
                         } else if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
-                                redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
+                                redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
                             }
                         } else {
-                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getText(), null, null));
+                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), null, null));
 
                         }
 
