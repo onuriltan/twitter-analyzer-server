@@ -3,14 +3,21 @@ package com.onuriltan.twitteranalyzerserver.config.spring;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onuriltan.twitteranalyzerserver.config.AllowedOriginsConfig;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
+
+import javax.inject.Inject;
+
 @Configuration
 public class SpringFrameworkBeans {
+
+    @Inject
+    AllowedOriginsConfig allowedOriginsConfig;
 
     @Bean
     public CommonsRequestLoggingFilter logFilter() {
@@ -39,4 +46,6 @@ public class SpringFrameworkBeans {
 
         return mapper;
     }
+
+
 }

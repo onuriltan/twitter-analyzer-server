@@ -2,6 +2,8 @@ package com.onuriltan.twitteranalyzerserver.base;
 
 import com.onuriltan.twitteranalyzerserver.websocket.model.TokenizedTweet;
 import com.onuriltan.twitteranalyzerserver.websocket.model.Tweet;
+import edu.stanford.nlp.ie.AbstractSequenceClassifier;
+import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.*;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Locale;
 
 
 @Service
@@ -30,16 +33,24 @@ public class TweetAnalyzer {
     public void applyNLP() {
 
         Tweet tweet = (Tweet) redisTemplate.boundListOps("tweet").leftPop();
+        String text = tweet.getTweet();
+        text = text.toLowerCase(Locale.ENGLISH);
+        text = text.replaceAll("((www\\.[^\\s]+)|(https?://[^\\s]+))", "");
+        text = text.replaceAll("\\p{Punct}+", " ");
+        text = text.trim().replaceAll(" +", " ");// eliminate double spaces, special words, http and hashtags
+
+        String cleanTweetBody = text.toString().toLowerCase(Locale.ENGLISH);
+        String cleansTweetBody = cleanTweetBody.substring(0, 1).toUpperCase() + cleanTweetBody.substring(1);
 
 
-        if(tweet.getTweet() != null) {
+        if(cleansTweetBody != null) {
 
-            Annotation document = new Annotation(tweet.getTweet());
+            Annotation document = new Annotation(cleansTweetBody);
 
             if (tweet.getLatitude() != null || tweet.getLongitude() != null) {
                 TokenizedTweet location = new TokenizedTweet();
 
-                location.setTweet(tweet.getTweet().toString());
+                location.setTweet(cleansTweetBody);
                 location.setLatitude(tweet.getLatitude());
                 location.setLongitude(tweet.getLongitude());
 
@@ -53,6 +64,8 @@ public class TweetAnalyzer {
             mainTweet.setForStreamPanel(true);
 
             webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
+
+            String serializedClassifier = "classifiers/ner-eng-ie.crf-3-all2008.ser.gz";
 
 
             // run all Annotators on this text
