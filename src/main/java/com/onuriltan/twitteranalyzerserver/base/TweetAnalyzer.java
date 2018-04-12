@@ -33,24 +33,21 @@ public class TweetAnalyzer {
     public void applyNLP() {
 
         Tweet tweet = (Tweet) redisTemplate.boundListOps("tweet").leftPop();
-        String text = tweet.getTweet();
-        text = text.toLowerCase(Locale.ENGLISH);
-        text = text.replaceAll("((www\\.[^\\s]+)|(https?://[^\\s]+))", "");
-        text = text.replaceAll("\\p{Punct}+", " ");
-        text = text.trim().replaceAll(" +", " ");// eliminate double spaces, special words, http and hashtags
-
-        String cleanTweetBody = text.toString().toLowerCase(Locale.ENGLISH);
-        String cleansTweetBody = cleanTweetBody.substring(0, 1).toUpperCase() + cleanTweetBody.substring(1);
+        String cleanTweet = tweet.getTweet();
+        cleanTweet = cleanTweet.toLowerCase(Locale.ENGLISH);
+        cleanTweet = cleanTweet.replaceAll("((www\\.[^\\s]+)|(https?://[^\\s]+))", "");
+        cleanTweet = cleanTweet.replaceAll("\\p{Punct}+", " ");
+        cleanTweet = cleanTweet.trim().replaceAll(" +", " ");// eliminate double spaces, special words, http and hashtags
 
 
-        if(cleansTweetBody != null) {
 
-            Annotation document = new Annotation(cleansTweetBody);
+        if(cleanTweet != null) {
+
 
             if (tweet.getLatitude() != null || tweet.getLongitude() != null) {
                 TokenizedTweet location = new TokenizedTweet();
 
-                location.setTweet(cleansTweetBody);
+                location.setTweet(cleanTweet);
                 location.setLatitude(tweet.getLatitude());
                 location.setLongitude(tweet.getLongitude());
 
@@ -60,12 +57,12 @@ public class TweetAnalyzer {
             TokenizedTweet mainTweet = new TokenizedTweet();
 
             mainTweet.setUsername(tweet.getUsername());
-            mainTweet.setTweet(tweet.getTweet().toString());
+            mainTweet.setTweet(cleanTweet);
             mainTweet.setForStreamPanel(true);
 
             webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
-            String serializedClassifier = "classifiers/ner-eng-ie.crf-3-all2008.ser.gz";
+            Annotation document = new Annotation(cleanTweet);
 
 
             // run all Annotators on this text
@@ -86,12 +83,11 @@ public class TweetAnalyzer {
                         tokenizedTweet.setWord(word);
                         tokenizedTweet.setNamedEntity(ne);
                         System.out.println(String.format("word: [%s] ne: [%s]", word, ne));
+
                         webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
 
                     }
-
                 }
-
             }
         }
     }
