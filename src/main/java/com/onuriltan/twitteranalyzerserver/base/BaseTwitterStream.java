@@ -2,18 +2,16 @@ package com.onuriltan.twitteranalyzerserver.base;
 
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
-import com.onuriltan.twitteranalyzerserver.config.googlemaps.GoogleMapsConfig;
 import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
 import com.onuriltan.twitteranalyzerserver.websocket.model.Tweet;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import twitter4j.*;
 
 import javax.inject.Inject;
+import java.util.Stack;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -23,29 +21,31 @@ public class BaseTwitterStream {
     TwitterStream twitterStream;
 
     @Inject
-    RedisTemplate redisTemplate;
-
-    @Inject
     TweetAnalyzer tweetAnalyzer;
 
     @Inject
     GeocodeGenerator geocodeGenerator;
 
+    @Inject
+    Stack<Tweet> stack;
+
     public void manageTwitterStream(StreamRequest request, SimpMessageSendingOperations webSocket) {
 
         if ("start".equals(request.getCommand())) {
+            stack.clear();
+            twitterStream.clearListeners();
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
                     if (!status.isRetweet()) {
                         if (status.getGeoLocation() != null) {
-                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
+                            stack.push(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
                         } else if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
-                                redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
+                                stack.push((new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng())));
                             }
                         } else {
-                            redisTemplate.boundListOps("tweet").leftPush(new Tweet(status.getUser().getName(), status.getText(), null, null));
+                            stack.push(new Tweet(status.getUser().getName(), status.getText(), null, null));
 
                         }
 
@@ -74,7 +74,8 @@ public class BaseTwitterStream {
         }
         if ("stop".equals(request.getCommand())) {
             twitterStream.clearListeners();
-            redisTemplate.discard();
+            twitterStream.shutdown();
+            stack.clear();
 
         }
 

@@ -8,10 +8,6 @@ spring:
   profiles: dev
   session:
     store-type: redis
-  redis:
-    host: localhost
-    password: 1234
-    port: 6379
 
 logging:
   level:
@@ -40,10 +36,6 @@ spring:
   profiles: prod
   session:
     store-type: redis
-  redis:
-    host: localhost
-    password: 1234
-    port: 6379
 
 logging:
   level:
