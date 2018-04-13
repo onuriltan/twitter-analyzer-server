@@ -6,8 +6,6 @@ spring:
 
 spring:
   profiles: dev
-  session:
-    store-type: redis
 
 logging:
   level:
@@ -34,8 +32,6 @@ googlemaps:
 
 spring:
   profiles: prod
-  session:
-    store-type: redis
 
 logging:
   level:
