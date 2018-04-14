@@ -9,7 +9,7 @@ test:
   stage: test
   before_script:
     - apk update
-    - apk add make libxml2-utils
+    - apk add mvn
   script:
    - mvn verify
 
@@ -20,7 +20,7 @@ build:
     - master
   before_script:
     - apk update
-    - apk add make libxml2-utils
+    - apk add mvn
   script:
     - mvn package
 
