@@ -8,7 +8,7 @@ stages:
 test:
   stage: test
   script:
-   - mvn clean test -B
+   - maven clean test -B
 
 
 build:
@@ -16,7 +16,7 @@ build:
   only:
     - master
   script:
-    - mvn package -B
+    - maven package -B
 
 
 docker:
