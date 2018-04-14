@@ -20,7 +20,7 @@ build:
     - master
   before_script:
     - apk update
-    - apk add mvn
+    - apk add maven
   script:
     - mvn package
 
