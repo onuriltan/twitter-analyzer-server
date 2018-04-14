@@ -9,7 +9,7 @@ test:
   stage: test
   before_script:
     - apk update
-    - apk add mvn
+    - apk add maven
   script:
    - mvn verify
 
