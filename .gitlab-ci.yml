@@ -7,16 +7,22 @@ stages:
 
 test:
   stage: test
+  before_script:
+    - apk update
+    - apk add make libxml2-utils
   script:
-   - maven clean test -B
+   - mvn verify
 
 
 build:
   stage: build
   only:
     - master
+  before_script:
+    - apk update
+    - apk add make libxml2-utils
   script:
-    - maven package -B
+    - mvn package
 
 
 docker:
