@@ -45,7 +45,7 @@ spring:
   profiles: heroku
 
 allowedorigins:
-  url: http://tweet-analyzer-ui.herokuapp.com/
+  url: http://twitter-analyzer-ui.com/
 
 twitter:
   api-key: gYBOmrWOnlS69DScInBWrTGFr
