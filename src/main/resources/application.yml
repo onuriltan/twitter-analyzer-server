@@ -1,6 +1,6 @@
 spring:
   profiles:
-      active: "dev"
+      active: "heroku"
 
 ---
 
@@ -27,6 +27,25 @@ spring:
 
 allowedorigins:
   url: http://localhost:3000
+
+twitter:
+  api-key: gYBOmrWOnlS69DScInBWrTGFr
+  api-secret: wv8LHjQnCUjR28ALBVinPFRIiufvCQoh82qvmCo2ufkioZVFkU
+  access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
+  access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
+
+googlemaps:
+  api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
+  url: https://maps.googleapis.com/maps/api/geocode/json
+
+---
+
+
+spring:
+  profiles: heroku
+
+allowedorigins:
+  url: http://tweet-analyzer-ui.herokuapp.com/
 
 twitter:
   api-key: gYBOmrWOnlS69DScInBWrTGFr
