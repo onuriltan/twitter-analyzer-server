@@ -1,19 +1,11 @@
 spring:
   profiles:
-      active: "dev, prod"
+      active: "dev"
 
 ---
 
 spring:
   profiles: dev
-
-logging:
-  level:
-    org:
-      springframework:
-        web:
-          filter:
-            CommonsRequestLoggingFilter: DEBUG
 
 allowedorigins:
   url: http://localhost:3000
@@ -32,14 +24,6 @@ googlemaps:
 
 spring:
   profiles: prod
-
-logging:
-  level:
-    org:
-      springframework:
-        web:
-          filter:
-            CommonsRequestLoggingFilter: DEBUG
 
 allowedorigins:
   url: http://localhost:3000
