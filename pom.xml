@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.onuriltan</groupId>
-    <artifactId>twitteranalyzercore</artifactId>
-    <version>LATEST</version>
+    <artifactId>twitteranalyzer-core</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>twitteranalyzerserver</name>
-    <description>TwitterAnalyzerServer</description>
+    <name>twitteranalyzer-core</name>
+    <description>TwitterAnalyzer Backend</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -119,20 +119,6 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 
 </project>
