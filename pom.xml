@@ -46,6 +46,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -100,12 +105,6 @@
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
             <classifier>models</classifier>
-            <version>3.9.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-parser</artifactId>
             <version>3.9.1</version>
         </dependency>
 

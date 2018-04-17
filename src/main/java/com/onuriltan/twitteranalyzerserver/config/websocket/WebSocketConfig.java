@@ -16,7 +16,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        System.out.println(allowedOriginsConfig.getUrl());
         registry.addEndpoint("/twitterStream").setAllowedOrigins(allowedOriginsConfig.getUrl()).withSockJS();
     }
 
