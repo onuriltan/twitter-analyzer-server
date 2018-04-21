@@ -36,6 +36,7 @@ public class BaseTwitterStream {
             twitterStream.clearListeners();
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
+
                     if (!status.isRetweet()) {
                         if (status.getGeoLocation() != null) {
                             stack.push(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));

@@ -27,6 +27,11 @@ public class TweetAnalyzer {
 
         if (!stack.empty()) {
             Tweet tweet = stack.pop();
+            try {
+                Thread.sleep(1000); // simulated delay
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             String tweetBody = tweet.getTweet();
 
             if (tweetBody != null) {
@@ -48,7 +53,6 @@ public class TweetAnalyzer {
                 mainTweet.setForStreamPanel(true);
 
                 webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
-
 
 
                 Sentence sent = new Sentence(tweetBody);

@@ -25,29 +25,34 @@ public class GeocodeGenerator {
     ObjectMapper objectMapper;
 
     public GeocodeResponse getLatLong(String address) {
-        String url = googleMapsConfig.getUrl()+"?address="+address+"&key="+googleMapsConfig.getApiKey();
+        String url = googleMapsConfig.getUrl() + "?address=" + address + "&key=" + googleMapsConfig.getApiKey();
 
-        ResponseEntity<String> response = restTemplate.getForEntity(url,String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         JSONObject jsonObject = null;
         try {
-             jsonObject = new JSONObject(response.getBody());
+            jsonObject = new JSONObject(response.getBody());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        if(response.getStatusCode().is2xxSuccessful()){
-           try {
-                double lat=  jsonObject.getJSONArray("results")
-                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-                double lng=  jsonObject.getJSONArray("results")
-                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-                return new GeocodeResponse(lat, lng);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            try {
+                if (jsonObject != null )
+                    if (jsonObject.getString("status").equals("OK"))
+                        try {
+                            double lat = jsonObject.getJSONArray("results")
+                                    .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                            double lng = jsonObject.getJSONArray("results")
+                                    .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                            return new GeocodeResponse(lat, lng);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
 
 
         return null;
