@@ -27,14 +27,14 @@ public class BaseTwitterStream {
     @Inject
     GeocodeGenerator geocodeGenerator;
 
-    @Inject
-    Stack<Tweet> stack;
+    /*@Inject
+    Stack<Tweet> stack;*/
 
     public void manageTwitterStream(StreamRequest request, SimpMessageSendingOperations webSocket) {
 
         if ("start".equals(request.getCommand())) {
-            stack.clear();
-            twitterStream.clearListeners();
+            //stack.clear();
+           // twitterStream.clearListeners();
             TokenizedTweet mainTweet = new TokenizedTweet();
 
             mainTweet.setUsername("asdasd");
@@ -43,23 +43,23 @@ public class BaseTwitterStream {
 
             webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
-          /* StatusListener listener = new StatusListener() {
+            StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
-
+                    System.out.println(status.getText());
                     if (!status.isRetweet()) {
                         if (status.getGeoLocation() != null) {
-                            stack.push(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
+                     //       stack.push(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
                         } else if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
-                                stack.push((new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng())));
+                      //          stack.push((new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng())));
                             }
                         } else {
-                            stack.push(new Tweet(status.getUser().getName(), status.getText(), null, null));
+                     //       stack.push(new Tweet(status.getUser().getName(), status.getText(), null, null));
 
                         }
 
-                        tweetAnalyzer.applyNLP();
+                  //      tweetAnalyzer.applyNLP();
                     }
                 }
 
@@ -78,19 +78,18 @@ public class BaseTwitterStream {
                 public void onException(Exception ex) {
                     ex.printStackTrace();
                 }
-            };*/
-            /*twitterStream.addListener(listener);
+            };
+            twitterStream.addListener(listener);
             twitterStream.filter(request.getMessage());
-        }    }
-
-            if ("stop".equals(request.getCommand())) {
+        }
+        if ("stop".equals(request.getCommand())) {
             twitterStream.clearListeners();
             twitterStream.shutdown();
-            stack.clear();
-
-        }*/
+       //     stack.clear();
 
         }
+
     }
+
 
 }
