@@ -27,14 +27,10 @@ public class BaseTwitterStream {
     @Inject
     GeocodeGenerator geocodeGenerator;
 
-    /*@Inject
-    Stack<Tweet> stack;*/
-
     public void manageTwitterStream(StreamRequest request, SimpMessageSendingOperations webSocket) {
 
         if ("start".equals(request.getCommand())) {
-            //stack.clear();
-           // twitterStream.clearListeners();
+            twitterStream.clearListeners();
             TokenizedTweet mainTweet = new TokenizedTweet();
 
             mainTweet.setUsername("asdasd");
@@ -48,18 +44,17 @@ public class BaseTwitterStream {
                     System.out.println(status.getText());
                     if (!status.isRetweet()) {
                         if (status.getGeoLocation() != null) {
-                     //       stack.push(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
+                            tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
                         } else if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
-                      //          stack.push((new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng())));
+                                tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
                             }
                         } else {
-                     //       stack.push(new Tweet(status.getUser().getName(), status.getText(), null, null));
+                            tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), null, null));
 
                         }
 
-                  //      tweetAnalyzer.applyNLP();
                     }
                 }
 
@@ -85,7 +80,6 @@ public class BaseTwitterStream {
         if ("stop".equals(request.getCommand())) {
             twitterStream.clearListeners();
             twitterStream.shutdown();
-       //     stack.clear();
 
         }
 

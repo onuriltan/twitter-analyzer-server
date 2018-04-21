@@ -20,61 +20,56 @@ public class TweetAnalyzer {
     @Inject
     private SimpMessageSendingOperations webSocket;
 
-    @Inject
-    Stack<Tweet> stack;
+    public void applyNLP(Tweet tweet) {
 
-    public void applyNLP() {
+        try {
+            Thread.sleep(1000); // simulated delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String tweetBody = tweet.getTweet();
 
-        if (!stack.empty()) {
-            Tweet tweet = stack.pop();
-            try {
-                Thread.sleep(1000); // simulated delay
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (tweetBody != null) {
+
+            if (tweet.getLatitude() != null || tweet.getLongitude() != null) {
+                TokenizedTweet location = new TokenizedTweet();
+
+                location.setTweet(tweetBody);
+                location.setLatitude(tweet.getLatitude());
+                location.setLongitude(tweet.getLongitude());
+
+                webSocket.convertAndSend("/topic/fetchTwitterStream", location);
             }
-            String tweetBody = tweet.getTweet();
 
-            if (tweetBody != null) {
+            TokenizedTweet mainTweet = new TokenizedTweet();
 
-                if (tweet.getLatitude() != null || tweet.getLongitude() != null) {
-                    TokenizedTweet location = new TokenizedTweet();
+            mainTweet.setUsername(tweet.getUsername());
+            mainTweet.setTweet(tweetBody);
+            mainTweet.setForStreamPanel(true);
 
-                    location.setTweet(tweetBody);
-                    location.setLatitude(tweet.getLatitude());
-                    location.setLongitude(tweet.getLongitude());
-
-                    webSocket.convertAndSend("/topic/fetchTwitterStream", location);
-                }
-
-                TokenizedTweet mainTweet = new TokenizedTweet();
-
-                mainTweet.setUsername(tweet.getUsername());
-                mainTweet.setTweet(tweetBody);
-                mainTweet.setForStreamPanel(true);
-
-                webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
+            webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
 
-                Sentence sent = new Sentence(tweetBody);
-                List<String> nerTags = sent.nerTags();
-                for (int i = 0; i < nerTags.size(); i++) {
-                    if (!nerTags.get(i).equals("O") && !nerTags.get(i).equals("MISC")) {
-                        String word = sent.word(i);
-                        String ner = nerTags.get(i);
+            Sentence sent = new Sentence(tweetBody);
+            List<String> nerTags = sent.nerTags();
+            for (int i = 0; i < nerTags.size(); i++) {
+                if (!nerTags.get(i).equals("O") && !nerTags.get(i).equals("MISC")) {
+                    String word = sent.word(i);
+                    String ner = nerTags.get(i);
 
-                        TokenizedTweet tokenizedTweet = new TokenizedTweet();
-                        tokenizedTweet.setNamedEntity(ner);
+                    TokenizedTweet tokenizedTweet = new TokenizedTweet();
+                    tokenizedTweet.setNamedEntity(ner);
 
-                        String cleanTweetToken = word.toString().toLowerCase(Locale.ENGLISH);
-                        String cleanTweetToken1 = cleanTweetToken.substring(0, 1).toUpperCase() + cleanTweetToken.substring(1);
+                    String cleanTweetToken = word.toString().toLowerCase(Locale.ENGLISH);
+                    String cleanTweetToken1 = cleanTweetToken.substring(0, 1).toUpperCase() + cleanTweetToken.substring(1);
 
-                        tokenizedTweet.setWord(cleanTweetToken1);
+                    tokenizedTweet.setWord(cleanTweetToken1);
 
-                        webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
+                    webSocket.convertAndSend("/topic/fetchTwitterStream", tokenizedTweet);
 
-                    }
                 }
             }
         }
     }
+
 }

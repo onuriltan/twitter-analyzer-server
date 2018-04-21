@@ -19,21 +19,6 @@ import java.util.Stack;
 @Configuration
 public class SpringFrameworkBeans {
 
-    @Inject
-    AllowedOriginsConfig allowedOriginsConfig;
-
-    @Bean
-    public CommonsRequestLoggingFilter logFilter() {
-        CommonsRequestLoggingFilter filter
-                = new CommonsRequestLoggingFilter();
-        filter.setIncludeQueryString(true);
-        filter.setIncludePayload(true);
-        filter.setMaxPayloadLength(10000);
-        filter.setIncludeHeaders(false);
-        filter.setAfterMessagePrefix("REQUEST DATA : ");
-        return filter;
-    }
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         // Do any additional configuration here
@@ -49,13 +34,5 @@ public class SpringFrameworkBeans {
 
         return mapper;
     }
-
-    @Bean
-    @ApplicationScope
-    public Stack<Tweet> applicationStack() {
-        return new Stack<Tweet>();
-    }
-
-
 
 }

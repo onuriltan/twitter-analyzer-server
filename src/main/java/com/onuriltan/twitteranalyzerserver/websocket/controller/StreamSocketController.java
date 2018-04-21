@@ -20,7 +20,6 @@ public class StreamSocketController {
 
     @MessageMapping("/manageTwitterStream")
     public String manageStream(StreamRequest streamRequest) throws Exception {
-        Thread.sleep(1000); // simulated delay
         streamSocketService.manageStream(streamRequest, webSocket);
         return "OK";
     }
