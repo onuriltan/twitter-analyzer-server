@@ -3,6 +3,7 @@ package com.onuriltan.twitteranalyzerserver.base;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
 import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
+import com.onuriltan.twitteranalyzerserver.websocket.model.TokenizedTweet;
 import com.onuriltan.twitteranalyzerserver.websocket.model.Tweet;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -34,7 +35,15 @@ public class BaseTwitterStream {
         if ("start".equals(request.getCommand())) {
             stack.clear();
             twitterStream.clearListeners();
-            StatusListener listener = new StatusListener() {
+            TokenizedTweet mainTweet = new TokenizedTweet();
+
+            mainTweet.setUsername("asdasd");
+            mainTweet.setTweet("asdasd");
+            mainTweet.setForStreamPanel(true);
+
+            webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
+
+          /* StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
 
                     if (!status.isRetweet()) {
@@ -69,18 +78,19 @@ public class BaseTwitterStream {
                 public void onException(Exception ex) {
                     ex.printStackTrace();
                 }
-            };
-            twitterStream.addListener(listener);
+            };*/
+            /*twitterStream.addListener(listener);
             twitterStream.filter(request.getMessage());
-        }
-        if ("stop".equals(request.getCommand())) {
+        }    }
+
+            if ("stop".equals(request.getCommand())) {
             twitterStream.clearListeners();
             twitterStream.shutdown();
             stack.clear();
 
+        }*/
+
         }
-
     }
-
 
 }
