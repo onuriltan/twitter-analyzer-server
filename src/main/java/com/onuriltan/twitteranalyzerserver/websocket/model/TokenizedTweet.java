@@ -1,5 +1,7 @@
 package com.onuriltan.twitteranalyzerserver.websocket.model;
 
+import java.util.Date;
+
 public class TokenizedTweet {
 
     private String tweet;
@@ -9,7 +11,16 @@ public class TokenizedTweet {
     private Double latitude;
     private Double longitude;
     private Boolean isForStreamPanel;
+    private String country;
+    private String createdAt;
 
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getUsername() {
         return username;
@@ -29,6 +40,14 @@ public class TokenizedTweet {
 
     public Double getLongitude() {
         return longitude;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setLongitude(Double longitude) {

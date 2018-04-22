@@ -4,8 +4,10 @@ import com.onuriltan.twitteranalyzerserver.base.BaseTwitterStream;
 import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 @Service
 public class StreamSocketService {
@@ -13,8 +15,8 @@ public class StreamSocketService {
     @Inject
     BaseTwitterStream baseTwitterStream;
 
-    public void manageStream(StreamRequest streamRequest, SimpMessageSendingOperations webSocket){
-        baseTwitterStream.manageTwitterStream(streamRequest,webSocket);
+    public void manageStream(StreamRequest streamRequest, String sessionId){
+        baseTwitterStream.manageTwitterStream(streamRequest, sessionId);
     }
 
 

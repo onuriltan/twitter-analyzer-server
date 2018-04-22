@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
 
 import javax.inject.Inject;
@@ -34,5 +35,6 @@ public class SpringFrameworkBeans {
 
         return mapper;
     }
+
 
 }

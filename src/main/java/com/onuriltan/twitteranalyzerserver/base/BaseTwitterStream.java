@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import twitter4j.*;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.Stack;
 
 @Component
@@ -27,31 +28,25 @@ public class BaseTwitterStream {
     @Inject
     GeocodeGenerator geocodeGenerator;
 
-    public void manageTwitterStream(StreamRequest request, SimpMessageSendingOperations webSocket) {
+    public void manageTwitterStream(StreamRequest request, String sessionId) {
 
         if ("start".equals(request.getCommand())) {
             twitterStream.clearListeners();
-            TokenizedTweet mainTweet = new TokenizedTweet();
-
-            mainTweet.setUsername("asdasd");
-            mainTweet.setTweet("asdasd");
-            mainTweet.setForStreamPanel(true);
-
-            webSocket.convertAndSend("/topic/fetchTwitterStream", mainTweet);
 
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {
-                    System.out.println(status.getText());
                     if (!status.isRetweet()) {
+
                         if (status.getGeoLocation() != null) {
-                            tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()));
-                        } else if (status.getUser().getLocation() != null) {
+                            tweetAnalyzer.applyNLP(sessionId,status,null);
+                        }
+                        if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
-                                tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), geocodeResponse.getLat(), geocodeResponse.getLng()));
+                                tweetAnalyzer.applyNLP(sessionId,status,geocodeResponse);
                             }
                         } else {
-                            tweetAnalyzer.applyNLP(new Tweet(status.getUser().getName(), status.getText(), null, null));
+                            tweetAnalyzer.applyNLP(sessionId,status,null);
 
                         }
 
