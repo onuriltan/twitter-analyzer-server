@@ -19,33 +19,36 @@ public class GeocodeGenerator {
     RestTemplate restTemplate;
 
     public GeocodeResponse getLatLong(String address) {
-        String url = googleMapsConfig.getUrl() + "?address=" + address + "&key=" + googleMapsConfig.getApiKey();
+        if(address != null) {
+            address = address.replaceAll(" ","");
+            String url = googleMapsConfig.getUrl() + "?address=" + address + "&key=" + googleMapsConfig.getApiKey();
 
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(response.getBody());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        if (response.getStatusCode().is2xxSuccessful()) {
+            JSONObject jsonObject = null;
             try {
-                if (jsonObject != null )
-                    if (jsonObject.getString("status").equals("OK"))
-                        try {
-                            double lat = jsonObject.getJSONArray("results")
-                                    .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-                            double lng = jsonObject.getJSONArray("results")
-                                    .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-
-                            return new GeocodeResponse(lat, lng);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                jsonObject = new JSONObject(response.getBody());
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                try {
+                    if (jsonObject != null)
+                        if (jsonObject.getString("status").equals("OK"))
+                            try {
+                                double lat = jsonObject.getJSONArray("results")
+                                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                                double lng = jsonObject.getJSONArray("results")
+                                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+
+                                return new GeocodeResponse(lat, lng);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

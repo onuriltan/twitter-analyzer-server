@@ -18,6 +18,7 @@ import java.util.Stack;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class BaseTwitterStream {
+    Logger logger = Logger.getLogger(BaseTwitterStream.class);
 
     @Inject
     TwitterStream twitterStream;
@@ -31,6 +32,7 @@ public class BaseTwitterStream {
     public void manageTwitterStream(StreamRequest request, String sessionId) {
 
         if ("start".equals(request.getCommand())) {
+            logger.info("Start request: "+request.toString()+" made with session id :"+sessionId);
             twitterStream.clearListeners();
 
             StatusListener listener = new StatusListener() {
@@ -73,6 +75,7 @@ public class BaseTwitterStream {
             twitterStream.filter(request.getMessage());
         }
         if ("stop".equals(request.getCommand())) {
+            logger.info("Stop request: "+request.toString()+" made with session id :"+sessionId);
             twitterStream.clearListeners();
             twitterStream.shutdown();
 
