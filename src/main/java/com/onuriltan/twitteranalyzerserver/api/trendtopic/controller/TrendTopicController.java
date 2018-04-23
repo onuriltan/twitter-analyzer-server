@@ -2,7 +2,6 @@ package com.onuriltan.twitteranalyzerserver.api.trendtopic.controller;
 
 import com.onuriltan.twitteranalyzerserver.api.trendtopic.model.TrendTopicModel;
 import com.onuriltan.twitteranalyzerserver.api.trendtopic.service.TrendTopicService;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
