@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.inject.Inject;
 
 @RestController
-@RequestMapping("/twitteranalyzer/api")
+@RequestMapping("/api")
 public class TrendTopicController {
 
     @Inject
