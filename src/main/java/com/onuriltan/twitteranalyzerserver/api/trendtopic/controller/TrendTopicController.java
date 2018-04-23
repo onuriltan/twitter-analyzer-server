@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://onuriltan.com:5000")
 public class TrendTopicController {
 
     @Inject
