@@ -3,21 +3,14 @@ package com.onuriltan.twitteranalyzerserver.base;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
 import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
-import com.onuriltan.twitteranalyzerserver.websocket.model.TokenizedTweet;
-import com.onuriltan.twitteranalyzerserver.websocket.model.Tweet;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import twitter4j.*;
-
 import javax.inject.Inject;
-import java.util.Map;
-import java.util.Stack;
 
-@Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+
+@Service
 public class BaseTwitterStream {
+
     Logger logger = Logger.getLogger(BaseTwitterStream.class);
 
     @Inject
@@ -33,7 +26,6 @@ public class BaseTwitterStream {
 
         if ("start".equals(request.getCommand())) {
             logger.info("Start request: "+request.toString()+" made with session id :"+sessionId);
-            twitterStream.clearListeners();
 
             StatusListener listener = new StatusListener() {
                 public void onStatus(Status status) {

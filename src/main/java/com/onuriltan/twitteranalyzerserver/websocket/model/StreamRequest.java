@@ -21,4 +21,12 @@ public class StreamRequest {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "StreamRequest{" +
+                "command='" + command + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

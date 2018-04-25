@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
+import twitter4j.Logger;
 import twitter4j.Status;
 
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ public class TweetAnalyzer {
 
     @Inject
     private SimpMessageSendingOperations webSocket;
+
+    Logger logger = Logger.getLogger(BaseTwitterStream.class);
 
     public void applyNLP(String sessionId, Status status, GeocodeResponse geocodeResponse) {
 
@@ -41,11 +44,12 @@ public class TweetAnalyzer {
 
             if (status.getGeoLocation() != null ) {
 
-                location.setTweet(status.getText());
                 location.setLatitude(status.getGeoLocation().getLatitude());
                 location.setLongitude(status.getGeoLocation().getLongitude());
 
                 webSocket.convertAndSendToUser(sessionId,"/queue/fetchTwitterStream", location ,createHeaders(sessionId));
+                logger.info("Message sent to session : "+sessionId+ ", Message: "+location.toString());
+
             }
             else if (geocodeResponse != null){
 
@@ -53,6 +57,9 @@ public class TweetAnalyzer {
                 location.setLongitude(geocodeResponse.getLng());
 
                 webSocket.convertAndSendToUser(sessionId,"/queue/fetchTwitterStream", location ,createHeaders(sessionId));
+                logger.info("Message sent to session : "+sessionId+ ", Message: "+location.toString());
+                System.out.println();
+
             }
 
             TokenizedTweet tweetForPanel = new TokenizedTweet();
@@ -73,6 +80,7 @@ public class TweetAnalyzer {
             }
             tweetForPanel.setForStreamPanel(true);
             webSocket.convertAndSendToUser(sessionId,"/queue/fetchTwitterStream", tweetForPanel,createHeaders(sessionId));
+            logger.info("Message sent to session : "+sessionId+ ", Message: "+tweetForPanel.toString());
 
 
             /*Sentence sent = new Sentence(tweetBody);
@@ -95,6 +103,7 @@ public class TweetAnalyzer {
                 }
             }*/ // TODO: Find solution to java heap memory exception to run nlp
         }
+
     }
     private MessageHeaders createHeaders(String sessionId) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);

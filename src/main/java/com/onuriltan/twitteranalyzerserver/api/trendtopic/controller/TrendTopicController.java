@@ -14,8 +14,13 @@ public class TrendTopicController {
     @Inject
     TrendTopicService trendTopicService;
 
-    @RequestMapping("/getTrendTopics")
-    public TrendTopicModel getTrendTopics() {
-        return trendTopicService.getTrendtopics();
+    @RequestMapping("/getTrendTopics/inArea")
+    public TrendTopicModel getTrendTopicsInArea() {
+        return trendTopicService.getTrendtopics(23424969);
+    }
+
+    @RequestMapping("/getTrendTopics/inWorldWide")
+    public TrendTopicModel getTrendTopicsInWorldWide() {
+        return trendTopicService.getTrendtopics(1);
     }
 }

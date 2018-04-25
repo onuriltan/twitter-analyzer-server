@@ -1,7 +1,5 @@
 package com.onuriltan.twitteranalyzerserver.websocket.model;
 
-import java.util.Date;
-
 public class TokenizedTweet {
 
     private String tweet;
@@ -84,5 +82,20 @@ public class TokenizedTweet {
 
     public void setForStreamPanel(Boolean forStreamPanel) {
         isForStreamPanel = forStreamPanel;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenizedTweet{" +
+                "tweet='" + tweet + '\'' +
+                ", username='" + username + '\'' +
+                ", word='" + word + '\'' +
+                ", namedEntity='" + namedEntity + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", isForStreamPanel=" + isForStreamPanel +
+                ", country='" + country + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                '}';
     }
 }

@@ -17,18 +17,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/twitterStream").setAllowedOrigins(allowedOriginsConfig.getUrl()).withSockJS().setInterceptors(httpSessionIdHandshakeInterceptor());
+        registry.addEndpoint("/twitterStream").setAllowedOrigins(allowedOriginsConfig.getUrl()).withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic", "/queue");
         registry.setApplicationDestinationPrefixes("/app");
-    }
-
-    @Bean
-    public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
-        return new HttpSessionIdHandshakeInterceptor();
     }
 
 

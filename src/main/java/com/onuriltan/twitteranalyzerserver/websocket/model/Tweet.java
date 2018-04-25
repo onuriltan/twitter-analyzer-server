@@ -1,6 +1,5 @@
 package com.onuriltan.twitteranalyzerserver.websocket.model;
 
-
 import java.io.Serializable;
 
 public class Tweet implements Serializable{
@@ -66,5 +65,17 @@ public class Tweet implements Serializable{
 
     public void setPos(String pos) {
         this.pos = pos;
+    }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+                "tweet='" + tweet + '\'' +
+                ", username='" + username + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", word='" + word + '\'' +
+                ", pos='" + pos + '\'' +
+                '}';
     }
 }

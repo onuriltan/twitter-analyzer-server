@@ -18,10 +18,10 @@ public class TrendTopicService {
     @Inject
     Twitter twitter;
 
-    public TrendTopicModel getTrendtopics(){
+    public TrendTopicModel getTrendtopics(int areaCode){
         Trends trends = null;
         try {
-            trends = twitter.getPlaceTrends(1);
+            trends = twitter.getPlaceTrends(areaCode);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
