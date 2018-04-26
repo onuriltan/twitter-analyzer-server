@@ -1,4 +1,4 @@
-package com.onuriltan.twitteranalyzerserver.websocket.model;
+package com.onuriltan.twitteranalyzerserver.api.twitterstream.model;
 
 public class TokenizedTweet {
 
@@ -9,15 +9,25 @@ public class TokenizedTweet {
     private Double latitude;
     private Double longitude;
     private Boolean isForStreamPanel;
-    private String country;
-    private String createdAt;
+    private String location;
+    private String createDate;
+    private String link;
 
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getLink() {
+        return link;
     }
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     public String getUsername() {
@@ -40,12 +50,12 @@ public class TokenizedTweet {
         return longitude;
     }
 
-    public String getCountry() {
-        return country;
+    public String getLocation() {
+        return location;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public void setLongitude(Double longitude) {
@@ -94,8 +104,9 @@ public class TokenizedTweet {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", isForStreamPanel=" + isForStreamPanel +
-                ", country='" + country + '\'' +
-                ", createdAt='" + createdAt + '\'' +
+                ", location='" + location + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", link='" + link + '\'' +
                 '}';
     }
 }

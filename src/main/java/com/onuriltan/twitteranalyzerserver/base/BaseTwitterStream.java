@@ -2,7 +2,7 @@ package com.onuriltan.twitteranalyzerserver.base;
 
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
-import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
+import com.onuriltan.twitteranalyzerserver.api.twitterstream.model.StreamRequest;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 import javax.inject.Inject;

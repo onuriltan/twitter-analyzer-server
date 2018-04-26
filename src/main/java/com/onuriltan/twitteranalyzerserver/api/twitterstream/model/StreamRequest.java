@@ -1,4 +1,4 @@
-package com.onuriltan.twitteranalyzerserver.websocket.model;
+package com.onuriltan.twitteranalyzerserver.api.twitterstream.model;
 
 public class StreamRequest {
 

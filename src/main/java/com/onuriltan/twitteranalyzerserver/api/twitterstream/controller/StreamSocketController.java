@@ -1,8 +1,8 @@
-package com.onuriltan.twitteranalyzerserver.websocket.controller;
+package com.onuriltan.twitteranalyzerserver.api.twitterstream.controller;
 
 
-import com.onuriltan.twitteranalyzerserver.websocket.model.StreamRequest;
-import com.onuriltan.twitteranalyzerserver.websocket.service.StreamSocketService;
+import com.onuriltan.twitteranalyzerserver.api.twitterstream.model.StreamRequest;
+import com.onuriltan.twitteranalyzerserver.api.twitterstream.service.StreamSocketService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
