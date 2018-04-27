@@ -37,16 +37,13 @@ public class BaseTwitterStream {
 
                         if (status.getGeoLocation() != null) {
                             tweetAnalyzer.tweetForWorldMap(sessionId, status, null);
-                        }
-                        if (status.getUser().getLocation() != null) {
+                        } else if (status.getUser().getLocation() != null) {
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
                             if (geocodeResponse != null) {
                                 tweetAnalyzer.tweetForWorldMap(sessionId, status, geocodeResponse);
                             }
-                        } else {
-                            tweetAnalyzer.tweetForPanel(sessionId, status);
-
                         }
+                        tweetAnalyzer.tweetForPanel(sessionId, status);
 
                     }
                 }
@@ -78,7 +75,7 @@ public class BaseTwitterStream {
                 e.printStackTrace();
             }
             webSocketSessionHandler.getWebSocketSessions().remove(sessionId);
-            logger.info("Session with id "+sessionId+ " is closed.");
+            logger.info("Session with id " + sessionId + " is closed.");
             twitterStream.clearListeners();
             twitterStream.shutdown();
 
