@@ -18,16 +18,9 @@ public class TwitterBeans {
 
     @Bean
     public twitter4j.conf.Configuration configuration(){
-       return twitterConfig.getConfigurationBuilder().build();
+       return twitterConfig.getConfiguration();
     }
 
-    @Bean
-    public TwitterStream twitterStream(){
-        TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(configuration());
-        twitter4j.TwitterStream twitterStream = twitterStreamFactory.getInstance();
-        return twitterStream;
-
-    }
     @Bean
     public Twitter twitter(){
         TwitterFactory twitterFactory = new TwitterFactory(configuration());
