@@ -16,11 +16,20 @@ public class StreamSocketService {
     public void manageStream(StreamRequest streamRequest, String sessionId){
 
         if(!webSocketSessionHandler.getSessions().containsKey(sessionId)){
-            BaseTwitterStream bt = new BaseTwitterStream();
-            bt.manageTwitterStream(streamRequest, sessionId);
-            webSocketSessionHandler.getSessions().put(sessionId, bt);
+            if(!webSocketSessionHandler.getSessionRequests().containsKey(sessionId)){
+                if(streamRequest.getCommand().equals("start")){
+                    BaseTwitterStream bt = new BaseTwitterStream();
+                    bt.manageTwitterStream(streamRequest, sessionId);
+                    webSocketSessionHandler.getSessions().put(sessionId, bt);
+                    webSocketSessionHandler.getSessionRequests().put(sessionId, streamRequest);
+                }
+            }
+
         }else {
-            webSocketSessionHandler.getSessions().get(sessionId).manageTwitterStream(streamRequest,sessionId);
+            if(!webSocketSessionHandler.getSessionRequests().get(sessionId).equals(streamRequest)){
+                webSocketSessionHandler.getSessions().get(sessionId).manageTwitterStream(streamRequest,sessionId);
+            }
+
         }
 
     }

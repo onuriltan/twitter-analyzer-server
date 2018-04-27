@@ -3,7 +3,6 @@ package com.onuriltan.twitteranalyzerserver.base;
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeResponse;
 import com.onuriltan.twitteranalyzerserver.api.twitterstream.model.TokenizedTweet;
 
-
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -78,8 +77,8 @@ public class TweetAnalyzer {
         webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForPanel, createHeaders(sessionId));
     }
 
-        private void tweetForNLP () {
-            // TODO: Find solution to java heap memory exception to run nlp
+    private void tweetForNLP() {
+        // TODO: Find solution to java heap memory exception to run nlp
         /*Sentence sent = new Sentence(tweetBody);
             List<String> nerTags = sent.nerTags();
             for (int i = 0; i < nerTags.size(); i++) {
@@ -99,22 +98,22 @@ public class TweetAnalyzer {
 
                 }
             }*/
-        }
+    }
 
 
-        private MessageHeaders createHeaders (String sessionId){
-            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-            headerAccessor.setSessionId(sessionId);
-            headerAccessor.setLeaveMutable(true);
-            return headerAccessor.getMessageHeaders();
-        }
+    private MessageHeaders createHeaders(String sessionId) {
+        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+        headerAccessor.setSessionId(sessionId);
+        headerAccessor.setLeaveMutable(true);
+        return headerAccessor.getMessageHeaders();
+    }
 
-        private String buildCreatedAt (Date date){
-            DateFormat dt = new SimpleDateFormat("dd MMMMMM yyyy, HH:mm:ss");
-            return dt.format(date);
-
-
-        }
+    private String buildCreatedAt(Date date) {
+        DateFormat dt = new SimpleDateFormat("dd MMMMMM yyyy, HH:mm:ss");
+        return dt.format(date);
 
 
     }
+
+
+}

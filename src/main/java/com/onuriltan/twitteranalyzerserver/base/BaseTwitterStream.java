@@ -69,15 +69,17 @@ public class BaseTwitterStream {
         }
         if ("stop".equals(request.getCommand())) {
             logger.info("Stop request: " + request.toString() + " made with session id :" + sessionId);
+
+            logger.info("Session with id " + sessionId + " is closed.");
+            twitterStream.clearListeners();
+            twitterStream.shutdown();
             try {
                 webSocketSessionHandler.getWebSocketSessions().get(sessionId).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             webSocketSessionHandler.getWebSocketSessions().remove(sessionId);
-            logger.info("Session with id " + sessionId + " is closed.");
-            twitterStream.clearListeners();
-            twitterStream.shutdown();
+            webSocketSessionHandler.getSessionRequests().remove(sessionId);
 
         }
 
