@@ -1,4 +1,4 @@
-package com.onuriltan.twitteranalyzerserver.config;
+package com.onuriltan.twitteranalyzerserver.config.websocket;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

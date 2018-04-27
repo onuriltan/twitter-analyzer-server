@@ -1,6 +1,5 @@
 package com.onuriltan.twitteranalyzerserver.config.websocket;
 
-import com.onuriltan.twitteranalyzerserver.config.AllowedOriginsConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MessageConverter;

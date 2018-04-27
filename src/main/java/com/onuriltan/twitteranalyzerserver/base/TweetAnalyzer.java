@@ -23,8 +23,6 @@ public class TweetAnalyzer {
     @Inject
     private SimpMessageSendingOperations webSocket;
 
-    //Logger logger = Logger.getLogger(BaseTwitterStream.class);
-
 
     public void tweetForWorldMap(String sessionId, Status status, GeocodeResponse geocodeResponse) {
 
