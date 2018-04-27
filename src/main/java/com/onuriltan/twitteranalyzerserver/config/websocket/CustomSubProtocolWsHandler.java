@@ -22,7 +22,7 @@ public class CustomSubProtocolWsHandler extends SubProtocolWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        LOGGER.info("New websocket connection was established");
+        LOGGER.info("Session with id "+session.getId()+ " is established.");
         sessionHandler.register(session);
         super.afterConnectionEstablished(session);
     }

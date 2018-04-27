@@ -14,6 +14,7 @@ public class StreamSocketService {
     WebSocketSessionHandler webSocketSessionHandler;
 
     public void manageStream(StreamRequest streamRequest, String sessionId){
+
         if(!webSocketSessionHandler.getSessions().containsKey(sessionId)){
             BaseTwitterStream bt = new BaseTwitterStream();
             bt.manageTwitterStream(streamRequest, sessionId);

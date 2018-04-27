@@ -9,7 +9,6 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
-import twitter4j.Logger;
 import twitter4j.Status;
 
 import javax.inject.Inject;
@@ -24,65 +23,72 @@ public class TweetAnalyzer {
     @Inject
     private SimpMessageSendingOperations webSocket;
 
-    Logger logger = Logger.getLogger(BaseTwitterStream.class);
+    //Logger logger = Logger.getLogger(BaseTwitterStream.class);
 
-    public void applyNLP(String sessionId, Status status, GeocodeResponse geocodeResponse) {
+
+    public void tweetForWorldMap(String sessionId, Status status, GeocodeResponse geocodeResponse) {
 
         try {
             Thread.sleep(1000); // simulated delay
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        TokenizedTweet tweetForWorldMap = new TokenizedTweet();
+        String tweetBody = status.getText();
+        tweetForWorldMap.setTweet(tweetBody);
+
+        if (status.getGeoLocation() != null) {
+
+            tweetForWorldMap.setLatitude(status.getGeoLocation().getLatitude());
+            tweetForWorldMap.setLongitude(status.getGeoLocation().getLongitude());
+
+            webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForWorldMap, createHeaders(sessionId));
+
+        } else if (geocodeResponse != null) {
+
+            tweetForWorldMap.setLatitude(geocodeResponse.getLat());
+            tweetForWorldMap.setLongitude(geocodeResponse.getLng());
+
+            webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForWorldMap, createHeaders(sessionId));
+
+        }
+    }
+
+    public void tweetForPanel(String sessionId, Status status) {
+
+        try {
+            Thread.sleep(1000); // simulated delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        TokenizedTweet tweetForPanel = new TokenizedTweet();
         String tweetBody = status.getText();
 
+        tweetForPanel.setUsername(status.getUser().getName());
+        tweetForPanel.setTweet(tweetBody);
+        tweetForPanel.setCreateDate(buildCreatedAt(status.getCreatedAt()));
+        tweetForPanel.setLink("https://twitter.com/" + status.getUser().getScreenName() + "/status/" + status.getId());
 
-        if (tweetBody != null) {
-            TokenizedTweet location = new TokenizedTweet();
-            location.setTweet(status.getText());
-
-            if (status.getGeoLocation() != null) {
-
-                location.setLatitude(status.getGeoLocation().getLatitude());
-                location.setLongitude(status.getGeoLocation().getLongitude());
-
-                webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", location, createHeaders(sessionId));
-                logger.info("Message sent to session : " + sessionId + ", Message: " + location.toString());
-
-            } else if (geocodeResponse != null) {
-
-                location.setLatitude(geocodeResponse.getLat());
-                location.setLongitude(geocodeResponse.getLng());
-
-                webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", location, createHeaders(sessionId));
-                logger.info("Message sent to session : " + sessionId + ", Message: " + location.toString());
-                System.out.println();
-
-            }
-
-            TokenizedTweet tweetForPanel = new TokenizedTweet();
-
-            tweetForPanel.setUsername(status.getUser().getName());
-            tweetForPanel.setTweet(tweetBody);
-            tweetForPanel.setCreateDate(buildCreatedAt(status.getCreatedAt()));
-            tweetForPanel.setLink("https://twitter.com/"+status.getUser().getScreenName()+"/status/"+status.getId());
-
-            if (status.getPlace() != null) {
-                if (status.getPlace().getCountry() != null)
-                    tweetForPanel.setLocation(status.getPlace().getCountry());
-                else if (status.getPlace().getFullName() != null)
-                    tweetForPanel.setLocation(status.getPlace().getFullName());
+        if (status.getPlace() != null) {
+            if (status.getPlace().getCountry() != null)
+                tweetForPanel.setLocation(status.getPlace().getCountry());
+            else if (status.getPlace().getFullName() != null)
+                tweetForPanel.setLocation(status.getPlace().getFullName());
 
 
-            } else if (status.getUser().getLocation() != null) {
-                tweetForPanel.setLocation(status.getUser().getLocation());
+        } else if (status.getUser().getLocation() != null) {
+            tweetForPanel.setLocation(status.getUser().getLocation());
 
-            }
-            tweetForPanel.setForStreamPanel(true);
-            webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForPanel, createHeaders(sessionId));
-            logger.info("Message sent to session : " + sessionId + ", Message: " + tweetForPanel.toString());
+        }
+        tweetForPanel.setForStreamPanel(true);
+        webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForPanel, createHeaders(sessionId));
+    }
 
-
-            /*Sentence sent = new Sentence(tweetBody);
+    private void tweetForNLP() {
+        // TODO: Find solution to java heap memory exception to run nlp
+        /*Sentence sent = new Sentence(tweetBody);
             List<String> nerTags = sent.nerTags();
             for (int i = 0; i < nerTags.size(); i++) {
                 if (!nerTags.get(i).equals("O") && !nerTags.get(i).equals("MISC")) {
@@ -100,9 +106,7 @@ public class TweetAnalyzer {
                     webSocket.convertAndSend("/queue/fetchTwitterStream", tokenizedTweet);
 
                 }
-            }*/ // TODO: Find solution to java heap memory exception to run nlp
-        }
-
+            }*/
     }
 
 
