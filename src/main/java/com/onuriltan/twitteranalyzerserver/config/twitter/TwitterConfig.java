@@ -14,20 +14,21 @@ public class TwitterConfig {
     private String apiSecret;
     private String accessToken;
     private String accessTokenSecret;
-    private ConfigurationBuilder configurationBuilder;
+    private twitter4j.conf.Configuration configuration;
 
     @PostConstruct
-    public ConfigurationBuilder buildTwitterConfig(){
+    public twitter4j.conf.Configuration buildTwitterConfig(){
         if (apiKey != null && apiSecret != null && accessToken != null && accessTokenSecret != null) {
-            configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.setDebugEnabled(true)
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.setDebugEnabled(true)
                     .setOAuthConsumerKey(apiKey)
                     .setOAuthConsumerSecret(apiSecret)
                     .setOAuthAccessToken(accessToken)
                     .setOAuthAccessTokenSecret(accessTokenSecret);
-            configurationBuilder.setJSONStoreEnabled(true);
+            builder.setJSONStoreEnabled(true);
+            configuration = builder.build();
         }
-        return configurationBuilder;
+        return configuration;
     }
 
 
@@ -63,7 +64,9 @@ public class TwitterConfig {
         this.accessTokenSecret = accessTokenSecret;
     }
 
-    public ConfigurationBuilder getConfigurationBuilder() {
-        return configurationBuilder;
+    public twitter4j.conf.Configuration getConfiguration() {
+        return configuration;
     }
+
+
 }
