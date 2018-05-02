@@ -1,6 +1,8 @@
 package com.onuriltan.twitteranalyzerserver.base.geocoding;
 
 import com.onuriltan.twitteranalyzerserver.config.googlemaps.GoogleMapsConfig;
+import com.onuriltan.twitteranalyzerserver.config.yahoo.YahooConfig;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
+import javax.json.JsonArray;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 
 @Service
 public class GeocodeGenerator {
@@ -16,11 +22,14 @@ public class GeocodeGenerator {
     GoogleMapsConfig googleMapsConfig;
 
     @Inject
+    YahooConfig yahooConfig;
+
+    @Inject
     RestTemplate restTemplate;
 
     public GeocodeResponse getLatLong(String address) {
-        if(address != null) {
-            address = address.replaceAll(" ","");
+        if (address != null) {
+            address = address.replaceAll(" ", "");
             String url = googleMapsConfig.getUrl() + "?address=" + address + "&key=" + googleMapsConfig.getApiKey();
 
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -52,6 +61,71 @@ public class GeocodeGenerator {
             }
         }
 
+
+        return null;
+    }
+
+    public String getAddress(String lat, String lng) {
+        if (lat != null || lng != null) {
+            String url = googleMapsConfig.getUrl() + "?latlng=" + lat + "," + lng + "&key=" + googleMapsConfig.getApiKey();
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response.getBody());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (response.getStatusCode().is2xxSuccessful()) {
+                try {
+                    if (jsonObject != null)
+                        if (jsonObject.getString("status").equals("OK"))
+                            try {
+                                JSONArray array = jsonObject.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
+                                for (int i = 0; i < array.length(); i++) {
+                                    if (array.getJSONObject(i).getJSONArray("types").get(0).equals("country")) {
+                                        return array.getJSONObject(i).getString("long_name");
+                                    }
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public String getWoeid(String address) {
+        if (address != null) {
+
+            String baseUrl = yahooConfig.getUrl() + "?q=";
+            String query = "select * from geo.places where text=\"" + address + "\"";
+            String fullUrlStr = baseUrl + query + "&format=json";
+
+            ResponseEntity<String> response = restTemplate.getForEntity(fullUrlStr, String.class);
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response.getBody());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (response.getStatusCode().is2xxSuccessful()) {
+                if (jsonObject != null) {
+                    try {
+                        return jsonObject.getJSONObject("query").getJSONObject("results").getJSONArray("place").getJSONObject(0).getString("woeid");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
 
         return null;
     }

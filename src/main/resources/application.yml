@@ -20,6 +20,9 @@ googlemaps:
   api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
   url: https://maps.googleapis.com/maps/api/geocode/json
 
+yahoo:
+  url: https://query.yahooapis.com/v1/public/yql
+
 ---
 
 spring:
@@ -37,6 +40,9 @@ twitter:
 googlemaps:
   api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
   url: https://maps.googleapis.com/maps/api/geocode/json
+
+yahoo:
+  url: https://query.yahooapis.com/v1/public/yql
 
 ---
 
