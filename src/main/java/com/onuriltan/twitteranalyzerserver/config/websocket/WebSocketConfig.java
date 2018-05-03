@@ -22,7 +22,7 @@ public class WebSocketConfig extends WebSocketMessageBrokerConfigurationSupport 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/twitterStream").setAllowedOrigins(allowedOriginsConfig.getUrl()).withSockJS();
+        registry.addEndpoint("/twitterStream").setAllowedOrigins(allowedOriginsConfig.getUrl()).withSockJS().setClientLibraryUrl("//cdn.jsdelivr.net/sockjs/1.1.4/sockjs.min.js");
     }
 
     @Override
