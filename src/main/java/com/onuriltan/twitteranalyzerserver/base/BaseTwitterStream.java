@@ -6,15 +6,18 @@ import com.onuriltan.twitteranalyzerserver.api.twitterstream.model.StreamRequest
 import com.onuriltan.twitteranalyzerserver.config.spring.SpringApplicationContext;
 import com.onuriltan.twitteranalyzerserver.config.twitter.TwitterConfig;
 import com.onuriltan.twitteranalyzerserver.config.websocket.WebSocketSessionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import twitter4j.*;
+
 
 import java.io.IOException;
 
 
 public class BaseTwitterStream {
 
-    Logger logger = Logger.getLogger(BaseTwitterStream.class);
+    Logger logger = LoggerFactory.getLogger(BaseTwitterStream.class);
 
     ApplicationContext context = SpringApplicationContext.getApplicationContext(); // get application context to inject beans to non managed spring class(this)
 
@@ -61,9 +64,15 @@ public class BaseTwitterStream {
                 }
 
                 public void onException(Exception ex) {
-                    ex.printStackTrace();
+                    TwitterException twitterException = (TwitterException)ex;
+                    logger.error("ErrorCode: "+twitterException.getStatusCode()+ ", Message: "+twitterException.getMessage());
+                    tweetAnalyzer.sendException(sessionId, String.valueOf(twitterException.getStatusCode()));
+                    twitterStream.clearListeners();
+                    twitterStream.shutdown();
+
                 }
             };
+
             twitterStream.addListener(listener);
             twitterStream.filter(request.getMessage());
         }

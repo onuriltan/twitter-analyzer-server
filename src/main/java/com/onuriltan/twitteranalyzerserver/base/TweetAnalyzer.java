@@ -77,6 +77,13 @@ public class TweetAnalyzer {
         webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", tweetForPanel, createHeaders(sessionId));
     }
 
+    public void sendException(String sessionId, String ex) {
+
+        TokenizedTweet message = new TokenizedTweet();
+        message.setException(ex);
+        webSocket.convertAndSendToUser(sessionId, "/queue/fetchTwitterStream", message, createHeaders(sessionId));
+    }
+
     private void tweetForNLP() {
         // TODO: Find solution to java heap memory exception to run nlp
         /*Sentence sent = new Sentence(tweetBody);

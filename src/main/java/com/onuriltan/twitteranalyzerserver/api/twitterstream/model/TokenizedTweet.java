@@ -12,6 +12,7 @@ public class TokenizedTweet {
     private String location;
     private String createDate;
     private String link;
+    private String exception;
 
 
     public String getLink() {
@@ -94,6 +95,14 @@ public class TokenizedTweet {
         isForStreamPanel = forStreamPanel;
     }
 
+    public String getException() {
+        return exception;
+    }
+
+    public void setException(String exception) {
+        this.exception = exception;
+    }
+
     @Override
     public String toString() {
         return "TokenizedTweet{" +
@@ -107,6 +116,7 @@ public class TokenizedTweet {
                 ", location='" + location + '\'' +
                 ", createDate='" + createDate + '\'' +
                 ", link='" + link + '\'' +
+                ", exception='" + exception + '\'' +
                 '}';
     }
 }

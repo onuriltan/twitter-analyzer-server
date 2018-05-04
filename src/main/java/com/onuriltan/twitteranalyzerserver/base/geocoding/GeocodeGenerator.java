@@ -79,7 +79,7 @@ public class GeocodeGenerator {
             if (response.getStatusCode().is2xxSuccessful()) {
                 try {
                     if (jsonObject != null)
-                        if (jsonObject.getString("status").equals("OK"))
+                        if (jsonObject.getString("status").equals("OK")) {
                             try {
                                 JSONArray array = jsonObject.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
                                 for (int i = 0; i < array.length(); i++) {
@@ -91,10 +91,16 @@ public class GeocodeGenerator {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        }
+                        else {
+                            return "error, "+jsonObject.getString("status");
+                        }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
+
         }
 
         return null;

@@ -61,6 +61,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- ORM -->
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
         <!-- Java -->
 
         <dependency>

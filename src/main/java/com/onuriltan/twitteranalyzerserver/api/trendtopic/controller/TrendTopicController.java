@@ -34,10 +34,13 @@ public class TrendTopicController {
         GeolocationModel woeidModel = geolocationService.getWoeid(addressModel.getAddress());
 
         return trendTopicService.getTrendtopics(Integer.valueOf(woeidModel.getWoeid()));
+
+
     }
 
     @RequestMapping("/getTrendTopics/inWorldWide")
     public TrendTopicModel getTrendTopicsInWorldWide() {
+
         return trendTopicService.getTrendtopics(1);
     }
 }
