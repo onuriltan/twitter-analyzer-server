@@ -14,7 +14,7 @@ import javax.inject.Inject;
 public class GeolocationController {
 
     @Inject
-    GeolocationService geolocationService;
+    private GeolocationService geolocationService;
 
     @RequestMapping(value = "/getAddress", method = RequestMethod.GET)
     public ResponseEntity<?> getAdress(@RequestParam(value = "lat") String lat,

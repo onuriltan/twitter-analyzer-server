@@ -19,9 +19,9 @@ import javax.inject.Inject;
 public class TrendTopicController {
 
     @Inject
-    TrendTopicService trendTopicService;
+    private TrendTopicService trendTopicService;
     @Inject
-    GeolocationService geolocationService;
+    private GeolocationService geolocationService;
 
 
 
@@ -55,6 +55,7 @@ public class TrendTopicController {
             return new ResponseEntity<>(new CustomErrorType("400 ", "trends not found"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/getTrendTopics/byAddress" ,method = RequestMethod.GET)
