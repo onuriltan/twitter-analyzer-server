@@ -11,10 +11,10 @@ allowedorigins:
   url: http://localhost:3000
 
 twitter:
-  api-key: gYBOmrWOnlS69DScInBWrTGFr
-  api-secret: wv8LHjQnCUjR28ALBVinPFRIiufvCQoh82qvmCo2ufkioZVFkU
-  access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
-  access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
+  api-key: ON3A0745DdbWgGoSwLNDnwEHn
+  api-secret: 8sr6ounIl6ipoEs2Z4TWrB2VWoLoo1AIm26ejfuyatnX88TDIh
+  access-token: 964455826084777984-BQd5TXqsc0YfqdZw1nzwMPUwcXfbQbm
+  access-token-secret: dLSHiez76YzrW447jcgXYHtytRyJBI00MBUizOO4tqM0p
 
 googlemaps:
   api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
@@ -32,10 +32,10 @@ allowedorigins:
   url: "*"
 
 twitter:
-  api-key: gYBOmrWOnlS69DScInBWrTGFr
-  api-secret: wv8LHjQnCUjR28ALBVinPFRIiufvCQoh82qvmCo2ufkioZVFkU
-  access-token: 964455826084777984-OxlNnBZYownQAwRAa57c61UApqsYUJ3
-  access-token-secret: frUPdfMpefBgWrwGOFn292o4emhUdYg31gpTy9PijLldW
+  api-key: ON3A0745DdbWgGoSwLNDnwEHn
+  api-secret: 8sr6ounIl6ipoEs2Z4TWrB2VWoLoo1AIm26ejfuyatnX88TDIh
+  access-token: 964455826084777984-BQd5TXqsc0YfqdZw1nzwMPUwcXfbQbm
+  access-token-secret: dLSHiez76YzrW447jcgXYHtytRyJBI00MBUizOO4tqM0p
 
 googlemaps:
   api-key: AIzaSyDnXHmMF1dTcCwHf5owel10aP1gaKw0ImE
