@@ -54,8 +54,7 @@ public class TrendTopicController {
         if(trendTopicResponse.getTrendTopics().size() == 0) {
             return new ResponseEntity<>(new CustomErrorType("400 ", "trends not found"), HttpStatus.NOT_FOUND);
         }
-        //return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
-        return  new ResponseEntity<>(new CustomErrorType("400 ", "address not found"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getTrendTopics/byAddress" ,method = RequestMethod.GET)
