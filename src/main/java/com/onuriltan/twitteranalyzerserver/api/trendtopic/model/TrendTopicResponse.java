@@ -2,7 +2,7 @@ package com.onuriltan.twitteranalyzerserver.api.trendtopic.model;
 
 import java.util.List;
 
-public class TrendTopicModel {
+public class TrendTopicResponse {
 
     private List<String> trendTopics;
 

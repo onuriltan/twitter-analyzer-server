@@ -1,6 +1,6 @@
 package com.onuriltan.twitteranalyzerserver.api.geolocation.model;
 
-public class GeolocationModel {
+public class GeolocationResponse {
 
     private String address;
     private String woeid;

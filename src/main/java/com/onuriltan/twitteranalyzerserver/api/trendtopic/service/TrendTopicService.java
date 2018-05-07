@@ -1,6 +1,6 @@
 package com.onuriltan.twitteranalyzerserver.api.trendtopic.service;
 
-import com.onuriltan.twitteranalyzerserver.api.trendtopic.model.TrendTopicModel;
+import com.onuriltan.twitteranalyzerserver.api.trendtopic.model.TrendTopicResponse;
 import org.springframework.stereotype.Service;
 import twitter4j.Trend;
 import twitter4j.Trends;
@@ -18,7 +18,7 @@ public class TrendTopicService {
     @Inject
     Twitter twitter;
 
-    public TrendTopicModel getTrendtopics(int areaCode){
+    public TrendTopicResponse getTrendtopics(int areaCode){
         Trends trends = null;
         try {
             trends = twitter.getPlaceTrends(areaCode);
@@ -30,9 +30,9 @@ public class TrendTopicService {
             List<Trend> list= Arrays.asList(trends.getTrends());
             List<String> trendList = new ArrayList<>();
             list.forEach(trend ->trendList.add(trend.getName()));
-            TrendTopicModel trendTopicModel = new TrendTopicModel();
-            trendTopicModel.setTrendTopics(trendList);
-            return trendTopicModel;
+            TrendTopicResponse trendTopicResponse = new TrendTopicResponse();
+            trendTopicResponse.setTrendTopics(trendList);
+            return trendTopicResponse;
         }
 
         return null;
