@@ -18,19 +18,27 @@ public class TrendTopicService {
     @Inject
     Twitter twitter;
 
-    public TrendTopicResponse getTrendtopics(int areaCode){
+    public TrendTopicResponse getTrendtopics(int areaCode) {
         Trends trends = null;
+
+        TrendTopicResponse trendTopicResponse = new TrendTopicResponse();
+
         try {
             trends = twitter.getPlaceTrends(areaCode);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
 
+        if (trends.getRateLimitStatus().getLimit() - trends.getRateLimitStatus().getRemaining() <= 2) {
+            trendTopicResponse.setStatusCode(401);
+            return trendTopicResponse;
+
+        }
+
         if (trends != null) {
-            List<Trend> list= Arrays.asList(trends.getTrends());
+            List<Trend> list = Arrays.asList(trends.getTrends());
             List<String> trendList = new ArrayList<>();
-            list.forEach(trend ->trendList.add(trend.getName()));
-            TrendTopicResponse trendTopicResponse = new TrendTopicResponse();
+            list.forEach(trend -> trendList.add(trend.getName()));
             trendTopicResponse.setTrendTopics(trendList);
             return trendTopicResponse;
         }
