@@ -29,7 +29,7 @@ public class TrendTopicService {
             e.printStackTrace();
         }
 
-        if (trends.getRateLimitStatus().getLimit() - trends.getRateLimitStatus().getRemaining() <= 2) {
+        if (trends.getRateLimitStatus().getRemaining() <= 2) {
             trendTopicResponse.setStatusCode(401);
             return trendTopicResponse;
 
