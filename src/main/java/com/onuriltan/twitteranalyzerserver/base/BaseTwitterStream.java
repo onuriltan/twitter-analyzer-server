@@ -13,6 +13,9 @@ import twitter4j.*;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class BaseTwitterStream {
@@ -26,6 +29,7 @@ public class BaseTwitterStream {
     private TwitterConfig twitterConfig = (TwitterConfig) context.getBean("twitterConfig");
     private WebSocketSessionHandler webSocketSessionHandler = (WebSocketSessionHandler) context.getBean("webSocketSessionHandler");
     private TwitterStream twitterStream = twitterStream();
+    private TwitterRateLimitHandler twitterRateLimitHandler = (TwitterRateLimitHandler) context.getBean("twitterRateLimitHandler");
 
 
     public void manageTwitterStream(StreamRequest request, String sessionId) {
@@ -69,12 +73,28 @@ public class BaseTwitterStream {
                     tweetAnalyzer.sendException(sessionId, String.valueOf(twitterException.getStatusCode()));
                     twitterStream.clearListeners();
                     twitterStream.shutdown();
+                    twitterRateLimitHandler.setWhenRateLimitOccured(Calendar.getInstance().getTime());
 
                 }
             };
+            if (new Date().getTime() - twitterRateLimitHandler.getWhenRateLimitOccured().getTime() >= 15*60*1000) {
+                logger.error("ErrorCode: 400", "Message: Twitter rate limit occured.");
+                tweetAnalyzer.sendException(sessionId, String.valueOf(400));
+                logger.info("Session with id " + sessionId + " is closed.");
+                twitterStream.clearListeners();
+                twitterStream.shutdown();
+                try {
+                    webSocketSessionHandler.getWebSocketSessions().get(sessionId).close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                webSocketSessionHandler.getWebSocketSessions().remove(sessionId);
+                webSocketSessionHandler.getSessionRequests().remove(sessionId);
 
-            twitterStream.addListener(listener);
-            twitterStream.filter(request.getMessage());
+            }else {
+                twitterStream.addListener(listener);
+                twitterStream.filter(request.getMessage());
+            }
         }
         if ("stop".equals(request.getCommand())) {
             logger.info("Stop request: " + request.toString() + " made with session id :" + sessionId);
