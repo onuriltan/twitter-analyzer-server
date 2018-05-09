@@ -77,7 +77,7 @@ public class BaseTwitterStream {
 
                 }
             };
-            if (new Date().getTime() - twitterRateLimitHandler.getWhenRateLimitOccured().getTime() >= 15*60*1000) {
+            if (twitterRateLimitHandler.getWhenRateLimitOccured() != null && new Date().getTime() - twitterRateLimitHandler.getWhenRateLimitOccured().getTime() >= 15*60*1000) {
                 logger.error("ErrorCode: 400", "Message: Twitter rate limit occured.");
                 tweetAnalyzer.sendException(sessionId, String.valueOf(400));
                 logger.info("Session with id " + sessionId + " is closed.");
