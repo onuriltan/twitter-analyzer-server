@@ -1,11 +1,20 @@
-image: openjdk:8u121-jdk-alpine
+image: docker:latest
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: prod
 
 stages:
   - build
-
+  - package
+  - deploy
 
 build:
+  image: maven:3-jdk-8
   stage: build
-  script:
-    - echo "Building project with maven"
-    - ./mvnw verify
+  script: "mvn package -B"
+  artifacts:
+    paths:
+      - target/*.jar
