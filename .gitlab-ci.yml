@@ -8,4 +8,4 @@ build:
   stage: build
   script:
     - echo "Building project with maven"
-    - mvn verify
+    - ./mvnw verify
