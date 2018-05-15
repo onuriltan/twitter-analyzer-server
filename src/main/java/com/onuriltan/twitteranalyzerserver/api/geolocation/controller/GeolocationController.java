@@ -13,8 +13,12 @@ import javax.inject.Inject;
 @RequestMapping("/api")
 public class GeolocationController {
 
+    private final GeolocationService geolocationService;
+
     @Inject
-    private GeolocationService geolocationService;
+    public GeolocationController(final GeolocationService geolocationService) {
+        this.geolocationService = geolocationService;
+    }
 
     @RequestMapping(value = "/getAddress", method = RequestMethod.GET)
     public ResponseEntity<?> getAdress(@RequestParam(value = "lat") String lat,

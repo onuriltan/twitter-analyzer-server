@@ -24,7 +24,6 @@ public class TrendTopicController {
     private GeolocationService geolocationService;
 
 
-
     @RequestMapping(value = "/getTrendTopics/inArea" ,method = RequestMethod.GET)
     public ResponseEntity<?> getTrendTopicsInArea(@RequestParam(value="woeid") String woeid) {
 

@@ -9,8 +9,13 @@ import javax.inject.Inject;
 @Service
 public class GeolocationService {
 
+    final GeocodeGenerator geocodeGenerator;
+
     @Inject
-    GeocodeGenerator geocodeGenerator;
+    public GeolocationService(final GeocodeGenerator geocodeGenerator) {
+        this.geocodeGenerator = geocodeGenerator;
+
+    }
 
     public GeolocationResponse getAdress(String lat, String lng) {
         String address = geocodeGenerator.getAddress(lat, lng);
