@@ -11,7 +11,6 @@ public class GeolocationService {
 
     final GeocodeGenerator geocodeGenerator;
 
-    @Inject
     public GeolocationService(final GeocodeGenerator geocodeGenerator) {
         this.geocodeGenerator = geocodeGenerator;
 
