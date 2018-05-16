@@ -1,6 +1,9 @@
 package com.onuriltan.twitteranalyzerserver.api.trendtopic.service;
 
 import com.onuriltan.twitteranalyzerserver.api.trendtopic.model.TrendTopicResponse;
+import com.onuriltan.twitteranalyzerserver.base.BaseTwitterStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import twitter4j.Trend;
 import twitter4j.Trends;
@@ -18,6 +21,9 @@ public class TrendTopicService {
     @Inject
     Twitter twitter;
 
+    Logger logger = LoggerFactory.getLogger(TrendTopicService.class);
+
+
     public TrendTopicResponse getTrendtopics(int areaCode) {
         Trends trends = null;
 
@@ -26,7 +32,9 @@ public class TrendTopicService {
         try {
             trends = twitter.getPlaceTrends(areaCode);
         } catch (TwitterException e) {
-            e.printStackTrace();
+            logger.error("ErrorCode: "+e.getStatusCode()+" ,Message: "+e.getLocalizedMessage());
+            trendTopicResponse.setStatusCode(e.getStatusCode());
+            return trendTopicResponse;
         }
 
         if (trends.getRateLimitStatus().getRemaining() <= 2) {

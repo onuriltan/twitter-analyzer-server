@@ -4,8 +4,6 @@ import com.onuriltan.twitteranalyzerserver.api.geolocation.model.GeolocationResp
 import com.onuriltan.twitteranalyzerserver.base.geocoding.GeocodeGenerator;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-
 @Service
 public class GeolocationService {
 
