@@ -4,6 +4,7 @@ public class GeolocationResponse {
 
     private String address;
     private String woeid;
+    private String errorMessage;
 
     public String getAddress() {
         return address;
@@ -19,5 +20,13 @@ public class GeolocationResponse {
 
     public void setWoeid(String woeid) {
         this.woeid = woeid;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

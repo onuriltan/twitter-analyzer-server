@@ -44,7 +44,9 @@ public class BaseTwitterStream {
                         if (status.getGeoLocation() != null) {
                             tweetAnalyzer.tweetForWorldMap(sessionId, status, null);
                         } else if (status.getUser().getLocation() != null) {
+
                             GeocodeResponse geocodeResponse = geocodeGenerator.getLatLong(status.getUser().getLocation());
+
                             if (geocodeResponse != null) {
                                 tweetAnalyzer.tweetForWorldMap(sessionId, status, geocodeResponse);
                             }
@@ -85,7 +87,7 @@ public class BaseTwitterStream {
                 try {
                     webSocketSessionHandler.getWebSocketSessions().get(sessionId).close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("ErrorMessage: "+e.getLocalizedMessage());
                 }
                 webSocketSessionHandler.getWebSocketSessions().remove(sessionId);
                 webSocketSessionHandler.getSessionRequests().remove(sessionId);
@@ -104,7 +106,7 @@ public class BaseTwitterStream {
             try {
                 webSocketSessionHandler.getWebSocketSessions().get(sessionId).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("ErrorMessage: "+e.getLocalizedMessage());
             }
             webSocketSessionHandler.getWebSocketSessions().remove(sessionId);
             webSocketSessionHandler.getSessionRequests().remove(sessionId);

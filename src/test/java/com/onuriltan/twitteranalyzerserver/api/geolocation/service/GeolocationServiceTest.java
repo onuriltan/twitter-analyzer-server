@@ -23,6 +23,8 @@ public class GeolocationServiceTest {
     public void getAdress_OK_Test() {
 
         String address = "test";
+
+
         Mockito.when(geocodeGenerator.getAddress(Mockito.anyString(), Mockito.anyString())).thenReturn(address);
 
         GeolocationService geolocationService = new GeolocationService(geocodeGenerator);

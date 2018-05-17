@@ -1,15 +1,15 @@
 package com.onuriltan.twitteranalyzerserver.base.geocoding;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
-import com.onuriltan.twitteranalyzerserver.config.googlemaps.GoogleMapsConfig;
 import com.onuriltan.twitteranalyzerserver.config.yahoo.YahooConfig;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
-import javax.json.JsonArray;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
+
 
 @Service
 public class GeocodeGenerator {
 
     @Inject
-    GoogleMapsConfig googleMapsConfig;
+    GeoApiContext geoApiContext;
 
     @Inject
     YahooConfig yahooConfig;
@@ -35,107 +32,76 @@ public class GeocodeGenerator {
     @Inject
     RestTemplate restTemplate;
 
+    Logger logger = LoggerFactory.getLogger(GeocodeGenerator.class);
+
+
     public GeocodeResponse getLatLong(String address) {
 
         if (address != null) {
-            address = address.replaceAll(" ", "");
-            String url = googleMapsConfig.getUrl() + "?address=" + address + "&key=" + googleMapsConfig.getApiKey();
 
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(response.getBody());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                try {
-                    if (jsonObject != null)
-                        if (jsonObject.getString("status").equals("OK"))
-                            try {
-                                double lat = jsonObject.getJSONArray("results")
-                                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-                                double lng = jsonObject.getJSONArray("results")
-                                        .getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-
-                                return new GeocodeResponse(lat, lng);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-
-
-
-        return null;
-    }
-
-    public String getAddress(String lat, String lng) {
-        if (lat != null || lng != null) {
-
-            /*GeoApiContext context = new GeoApiContext.Builder() // TODO : implement geocode client library
-                    .apiKey(googleMapsConfig.getApiKey())
-                    .build();
             GeocodingResult[] results = new GeocodingResult[0];
             try {
-                results = GeocodingApi.reverseGeocode(context, new LatLng(Double.valueOf(lat), Double.valueOf(lng))).await();
-            } catch (ApiException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            System.out.println(gson.toJson(results[0].addressComponents));*/
+                results = GeocodingApi.geocode(geoApiContext, address).await();
+            } catch (ApiException  | InterruptedException  | IOException e) {
+                logger.error("ErrorMessage: " + e.getLocalizedMessage());
 
-
-            String url = googleMapsConfig.getUrl() + "?latlng=" + lat + "," + lng + "&key=" + googleMapsConfig.getApiKey();
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(response.getBody());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (response.getStatusCode().is2xxSuccessful()) {
-                try {
-                    if (jsonObject != null)
-                        if (jsonObject.getString("status").equals("OK")) {
-                            try {
-                                JSONArray array = jsonObject.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
-                                for (int i = 0; i < array.length(); i++) {
-                                    if (array.getJSONObject(i).getJSONArray("types").get(0).equals("country")) {
-                                        return array.getJSONObject(i).getString("long_name");
-                                    }
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            return "error, "+jsonObject.getString("status");
-                        }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
+
+            Double lat = results[0].geometry.location.lat;
+            Double lng = results[0].geometry.location.lng;
+            return new GeocodeResponse(lat, lng);
 
         }
 
         return null;
+
+    }
+
+
+    public String getAddress(String lat, String lng) {
+
+        if (lat != null || lng != null) {
+
+            GeocodingResult[] results;
+            try {
+                results = GeocodingApi.reverseGeocode(geoApiContext, new LatLng(Double.valueOf(lat), Double.valueOf(lng))).await();
+            } catch (ApiException  | InterruptedException  | IOException e) {
+                logger.error("ErrorMessage: " + e.getLocalizedMessage());
+
+                return e.getLocalizedMessage();
+            }
+
+
+            AddressComponent[] addressComponents = results[0].addressComponents;
+
+            if (addressComponents != null) {
+                for (AddressComponent component : addressComponents) {
+                    for (AddressComponentType addressComponentType : component.types) {
+                        if (addressComponentType.equals(AddressComponentType.LOCALITY)) {
+                            return component.shortName; // return city or town name
+                        }
+                        else if(addressComponentType.equals(AddressComponentType.SUBLOCALITY)) {
+                            return component.shortName; // return city or town name
+
+                        }
+                        else if(addressComponentType.equals(AddressComponentType.COUNTRY)) {
+                            return component.shortName; // return city or town name
+
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return null;
+
+
     }
 
     public String getWoeid(String address) {
+
         if (address != null) {
 
             String baseUrl = yahooConfig.getUrl() + "?q=";
@@ -144,18 +110,27 @@ public class GeocodeGenerator {
 
             ResponseEntity<String> response = restTemplate.getForEntity(fullUrlStr, String.class);
 
+
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(response.getBody());
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                logger.error("ErrorMessage: "+e.getLocalizedMessage());
+
+                return e.getMessage();
+
             }
             if (response.getStatusCode().is2xxSuccessful()) {
                 if (jsonObject != null) {
+
                     try {
-                        return jsonObject.getJSONObject("query").getJSONObject("results").getJSONArray("place").getJSONObject(0).getString("woeid");
+                        return (jsonObject.getJSONObject("query").getJSONObject("results").getJSONArray("place").getJSONObject(0).getString("woeid"));
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        logger.error("ErrorMessage: "+e.getLocalizedMessage());
+
+                        return e.getMessage();
+
                     }
                 }
             }
@@ -164,4 +139,9 @@ public class GeocodeGenerator {
 
         return null;
     }
+
+
+
+
+
 }
