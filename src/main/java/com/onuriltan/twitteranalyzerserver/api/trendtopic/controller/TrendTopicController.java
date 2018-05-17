@@ -30,10 +30,10 @@ public class TrendTopicController {
         TrendTopicResponse trendTopicResponse = trendTopicService.getTrendtopics(Integer.valueOf(woeid));
 
         if(trendTopicResponse.getTrendTopics() == null && trendTopicResponse.getTrendTopics().size() == 0) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
         }
         if(trendTopicResponse.getStatusCode() == 401) {
-            return new ResponseEntity<>(new CustomErrorType("401 ", "trends api rate limited"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("401", "trends api rate limited"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
     }
@@ -45,27 +45,27 @@ public class TrendTopicController {
 
         GeolocationResponse addressModel = geolocationService.getAdress(lat,lng);
         if(addressModel.getAddress() == null) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "address not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "address not found"), HttpStatus.NOT_FOUND);
         }
         GeolocationResponse woeidModel = geolocationService.getWoeid(addressModel.getAddress());
         if(woeidModel.getWoeid() == null) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "woeid not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "woeid not found"), HttpStatus.NOT_FOUND);
         }
 
         TrendTopicResponse trendTopicResponse = trendTopicService.getTrendtopics(Integer.valueOf(woeidModel.getWoeid()));
 
         if(trendTopicResponse.getTrendTopics() == null ) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
         }
         if( trendTopicResponse.getTrendTopics().size() == 0) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
 
         }
         if(trendTopicResponse.getStatusCode() == 401) {
-            return new ResponseEntity<>(new CustomErrorType("401 ", "trends api rate limited"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("401", "trends api rate limited"), HttpStatus.NOT_FOUND);
         }
         if(trendTopicResponse.getStatusCode() == 404) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
 
@@ -77,20 +77,20 @@ public class TrendTopicController {
         GeolocationResponse woeidModel = geolocationService.getWoeid(address);
 
         if(woeidModel.getWoeid() == null) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "woeid not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "woeid not found"), HttpStatus.NOT_FOUND);
         }
 
         TrendTopicResponse trendTopicResponse = trendTopicService.getTrendtopics(Integer.valueOf(woeidModel.getWoeid()));
 
         if(trendTopicResponse.getTrendTopics() == null) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
         }
         if(trendTopicResponse.getTrendTopics().size() == 0) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
 
         }
         if(trendTopicResponse.getStatusCode() == 401) {
-            return new ResponseEntity<>(new CustomErrorType("401 ", "trends api rate limited"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("401", "trends api rate limited"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
     }
@@ -100,15 +100,15 @@ public class TrendTopicController {
         TrendTopicResponse trendTopicResponse = trendTopicService.getTrendtopics(1);
 
         if(trendTopicResponse.getTrendTopics() == null ) {
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
         }
 
         if(trendTopicResponse.getTrendTopics().size() == 0){
-            return new ResponseEntity<>(new CustomErrorType("404 ", "trends not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("404", "trends not found"), HttpStatus.NOT_FOUND);
 
         }
         if(trendTopicResponse.getStatusCode() == 401) {
-            return new ResponseEntity<>(new CustomErrorType("401 ", "trends api rate limited"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType("401", "trends api rate limited"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trendTopicResponse, HttpStatus.OK);
     }
