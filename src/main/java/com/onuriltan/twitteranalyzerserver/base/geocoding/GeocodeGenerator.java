@@ -118,8 +118,6 @@ public class GeocodeGenerator {
 
                 logger.error("ErrorMessage: "+e.getLocalizedMessage());
 
-                return e.getMessage();
-
             }
             if (response.getStatusCode().is2xxSuccessful()) {
                 if (jsonObject != null) {
@@ -129,7 +127,6 @@ public class GeocodeGenerator {
                     } catch (JSONException e) {
                         logger.error("ErrorMessage: "+e.getLocalizedMessage());
 
-                        return e.getMessage();
 
                     }
                 }
