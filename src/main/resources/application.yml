@@ -1,6 +1,6 @@
 spring:
   profiles:
-      active: "prod"
+      active: "dev"
 
 ---
 
@@ -23,6 +23,13 @@ googlemaps:
 yahoo:
   url: https://query.yahooapis.com/v1/public/yql
 
+locationiq:
+  api-key: c38eb33100ed51
+  url: https://eu1.locationiq.com/v1/reverse.php
+
+
+
+
 ---
 
 spring:
@@ -43,6 +50,10 @@ googlemaps:
 
 yahoo:
   url: https://query.yahooapis.com/v1/public/yql
+
+locationiq:
+  api-key: c38eb33100ed51
+  url: https://eu1.locationiq.com/v1/reverse.php
 
 ---
 
