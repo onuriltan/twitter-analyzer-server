@@ -23,6 +23,10 @@ dist/
 nbdist/
 .nb-gradle/
 
-
 *.rdb
+
+### OS X ###
+.DS_Store
+
+## Spring ##
 application-dev.yml
