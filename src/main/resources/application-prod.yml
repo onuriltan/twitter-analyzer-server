@@ -1,0 +1,19 @@
+allowedorigins:
+  url: "*"
+
+twitter:
+  api-key: ${OPENSHIFT_TWITTER-APIKEY}
+  api-secret: ${OPENSHIFT_TWITTER-APISECRET}
+  access-token: ${OPENSHIFT_TWITTER-ACCESSTOKEN}
+  access-token-secret: ${OPENSHIFT_TWITTER-ACCESSTOKEN-SECRET}
+
+yahoo:
+  url: https://query.yahooapis.com/v1/public/yql
+
+locationiq:
+  api-key: ${OPENSHIFT_LOCATIONIQ-APIKEY}
+  url: https://eu1.locationiq.com/v1/reverse.php
+
+
+
+
