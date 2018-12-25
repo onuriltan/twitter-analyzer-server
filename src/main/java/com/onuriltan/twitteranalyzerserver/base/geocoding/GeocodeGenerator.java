@@ -1,6 +1,5 @@
 package com.onuriltan.twitteranalyzerserver.base.geocoding;
 
-import com.google.maps.GeoApiContext;
 import com.onuriltan.twitteranalyzerserver.config.locationiq.LocationIqConfig;
 import com.onuriltan.twitteranalyzerserver.config.yahoo.YahooConfig;
 import javax.inject.Inject;

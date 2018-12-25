@@ -96,13 +96,6 @@
             <version>4.0.6</version>
         </dependency>
 
-        <!-- Google Maps -->
-
-        <dependency>
-            <groupId>com.google.maps</groupId>
-            <artifactId>google-maps-services</artifactId>
-            <version>0.2.7</version>
-        </dependency>
 
         <!-- Natural Language Processor -->
 
